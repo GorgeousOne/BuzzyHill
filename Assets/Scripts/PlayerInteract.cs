@@ -89,4 +89,12 @@ public class PlayerInteract : MonoBehaviour {
 		carrying.GetComponent<Rigidbody2D>().isKinematic = false;
 		carrying = null;
 	}
+
+	public void OnTalk() {
+		PlayerMovement.Instance.Wait();
+	}
+
+	public void OnFinishTalk() {
+		PlayerMovement.Instance.Continue();
+	}
 }

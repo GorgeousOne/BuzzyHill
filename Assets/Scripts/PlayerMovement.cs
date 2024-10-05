@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour {
 
+	public static PlayerMovement Instance;
+	
 	public static PlayerControls controls;
 	[SerializeField] LayerMask lmWalls;
 	[SerializeField] float fJumpVelocity = 5;
@@ -23,6 +25,7 @@ public class PlayerMovement : MonoBehaviour {
 	[SerializeField] [Range(0, 1)] float fCutJumpHeight = 0.5f;
 
 	private void OnEnable() {
+		Instance = this;
 		controls = new PlayerControls();
 		controls.Player.Jump.performed += _ => jumpPressed = true;
 		controls.Player.Jump.performed += _ => jumpPressed = true;
@@ -40,12 +43,26 @@ public class PlayerMovement : MonoBehaviour {
 	private bool jumpPressed;
 	private bool jumpReleased;
 	private float horizontalInput;
+	//tlaking... anything
+	private bool isWaiting;
 	
 	void Update() {
 		horizontalInput = controls.Player.Move.ReadValue<float>();
 	}
 
+	public void Wait() {
+		isWaiting = true;
+	}
+
+	public void Continue() {
+		isWaiting = false;
+	}
+	
 	private void FixedUpdate() {
+		if (isWaiting) {
+			return;
+		}
+		
 		Vector2 v2GroundedBoxCheckPosition = (Vector2) transform.position + new Vector2(0, -0.01f);
 		Vector2 v2GroundedBoxCheckScale = (Vector2) transform.localScale + new Vector2(-0.02f, 0);
 		bool bGrounded = Physics2D.OverlapCapsule(v2GroundedBoxCheckPosition, v2GroundedBoxCheckScale, 0, lmWalls);
