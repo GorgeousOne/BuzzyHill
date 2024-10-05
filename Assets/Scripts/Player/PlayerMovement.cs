@@ -11,7 +11,8 @@ public class PlayerMovement : MonoBehaviour {
 	[SerializeField] float fJumpVelocity = 5;
 	
 	Rigidbody2D rigid;
-
+	CapsuleCollider2D capsule;
+	
 	float fJumpPressedRemember = 0;
 	[SerializeField] float fJumpPressedRememberTime = 0.2f;
 
@@ -36,6 +37,7 @@ public class PlayerMovement : MonoBehaviour {
 	void Awake() {
 		Instance = this;
 		rigid = GetComponent<Rigidbody2D>();
+		capsule =GetComponent<CapsuleCollider2D>();
 		
 		controls = new PlayerControls();
 		controls.Player.Jump.performed += _ => jumpPressed = true;
@@ -53,7 +55,6 @@ public class PlayerMovement : MonoBehaviour {
 	}
 
 	public void Freeze() {
-		Debug.Log("Freeze");
 		isWaiting = true;
 		controls.Disable();
 		rigid.velocity = Vector2.zero;
@@ -61,7 +62,6 @@ public class PlayerMovement : MonoBehaviour {
 	}
 
 	public void Unfreeze() {
-		Debug.Log("Melt");
 		isWaiting = false;
 		controls.Enable();
 		rigid.isKinematic = false;
@@ -72,12 +72,13 @@ public class PlayerMovement : MonoBehaviour {
 			return;
 		}
 		
-		Vector2 v2GroundedBoxCheckPosition = (Vector2) transform.position + new Vector2(0, -0.01f);
-		Vector2 v2GroundedBoxCheckScale = (Vector2) transform.localScale + new Vector2(-0.02f, 0);
-		bool bGrounded = Physics2D.OverlapCapsule(v2GroundedBoxCheckPosition, v2GroundedBoxCheckScale, 0, lmWalls);
-
+		Vector2 v2GroundedBoxCheckPosition = (Vector2) capsule.bounds.center + new Vector2(0, -0.01f);
+		Vector2 v2GroundedBoxCheckScale = (Vector2) capsule.size + new Vector2(0, -0.02f) ;
+		bool bGrounded = Physics2D.OverlapCapsule(v2GroundedBoxCheckPosition, v2GroundedBoxCheckScale, CapsuleDirection2D.Horizontal, 0, lmWalls);
+		
 		fGroundedRemember -= Time.deltaTime;
 		if (bGrounded) {
+			Debug.Log("yay");
 			fGroundedRemember = fGroundedRememberTime;
 		}
 
