@@ -1,0 +1,56 @@
+{
+    "name": "DialogControls",
+    "maps": [
+        {
+            "name": "Dialog",
+            "id": "0e4c4eed-1c4d-4030-b561-68950b0ac0ac",
+            "actions": [
+                {
+                    "name": "Skip",
+                    "type": "Button",
+                    "id": "2367d319-4324-4da5-93a8-13dc49151aa5",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "56a48aa2-5383-4ab0-b00c-3061d4c5f481",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Skip",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "afe61228-9a20-4553-94a2-4c415349a370",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Skip",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "83df8c6f-2fa9-4aee-93a8-a8184297a5c8",
+                    "path": "<Keyboard>/enter",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Skip",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

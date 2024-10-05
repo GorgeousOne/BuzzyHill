@@ -13,6 +13,10 @@ public class PauseMenu : MonoBehaviour {
 		menuControls.Enable();
 	}
 
+	private void OnDisable() {
+		menuControls.Disable();
+	}
+
 	void Start() {
 		pauseMenu.SetActive(false);	
 	}
