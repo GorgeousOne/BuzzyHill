@@ -8,8 +8,9 @@ public class PlayerFlip : MonoBehaviour {
 	}
 
 	void Update() {
-		if (Mathf.Abs(Input.GetAxisRaw("Horizontal")) > 0.01f) {
-			transform.localPosition = new Vector2(v2LocalPosStart.x * Mathf.Sign(Input.GetAxisRaw("Horizontal")),
+		float horizontalInput = PlayerMovement.controls.Player.Move.ReadValue<float>();
+		if (Mathf.Abs(horizontalInput) > 0.01f) {
+			transform.localPosition = new Vector2(v2LocalPosStart.x * Mathf.Sign(horizontalInput),
 				transform.localPosition.y);
 		}
 	}

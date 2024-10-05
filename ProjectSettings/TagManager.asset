@@ -12,8 +12,8 @@ TagManager:
   - Water
   - UI
   - Solid
-  - 
-  - 
+  - Pickup
+  - Grab
   - 
   - 
   - 
@@ -38,6 +38,18 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Pickup
+    uniqueID: 321002155
+    locked: 0
+  - name: Highlight
+    uniqueID: 1437300407
+    locked: 0
+  - name: Player
+    uniqueID: 2316302923
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: UI
+    uniqueID: 2398558067
     locked: 0

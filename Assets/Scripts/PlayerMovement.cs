@@ -1,9 +1,12 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour {
+
+	public static PlayerControls controls;
 	[SerializeField] LayerMask lmWalls;
 	[SerializeField] float fJumpVelocity = 5;
-
+	
 	Rigidbody2D rigid;
 
 	float fJumpPressedRemember = 0;
@@ -18,6 +21,15 @@ public class PlayerMovement : MonoBehaviour {
 	[SerializeField] [Range(0, 1)] float fHorizontalDampingWhenTurning = 0.5f;
 
 	[SerializeField] [Range(0, 1)] float fCutJumpHeight = 0.5f;
+
+	private void OnEnable() {
+		controls = new PlayerControls();
+		controls.Enable();
+	}
+
+	private void OnDisable() {
+		controls.Disable();
+	}
 
 	void Start() {
 		rigid = GetComponent<Rigidbody2D>();
@@ -34,11 +46,11 @@ public class PlayerMovement : MonoBehaviour {
 		}
 
 		fJumpPressedRemember -= Time.deltaTime;
-		if (Input.GetButtonDown("Jump")) {
+		if (controls.Player.Jump.WasPressedThisFrame()) {
 			fJumpPressedRemember = fJumpPressedRememberTime;
 		}
 
-		if (Input.GetButtonUp("Jump")) {
+		if (controls.Player.Jump.WasReleasedThisFrame()) {
 			if (rigid.velocity.y > 0) {
 				rigid.velocity = new Vector2(rigid.velocity.x, rigid.velocity.y * fCutJumpHeight);
 			}
@@ -51,11 +63,12 @@ public class PlayerMovement : MonoBehaviour {
 		}
 
 		float fHorizontalVelocity = rigid.velocity.x;
-		fHorizontalVelocity += Input.GetAxisRaw("Horizontal") * fHorizontalAcceleration;
+		float horizontalInput = controls.Player.Move.ReadValue<float>();
+		fHorizontalVelocity += horizontalInput * fHorizontalAcceleration;
 
-		if (Mathf.Abs(Input.GetAxisRaw("Horizontal")) < 0.01f)
+		if (Mathf.Abs(horizontalInput) < 0.01f)
 			fHorizontalVelocity *= Mathf.Pow(1f - fHorizontalDampingWhenStopping, Time.deltaTime * 10f);
-		else if (Mathf.Sign(Input.GetAxisRaw("Horizontal")) != Mathf.Sign(fHorizontalVelocity))
+		else if (Mathf.Sign(horizontalInput) != Mathf.Sign(fHorizontalVelocity))
 			fHorizontalVelocity *= Mathf.Pow(1f - fHorizontalDampingWhenTurning, Time.deltaTime * 10f);
 		else
 			fHorizontalVelocity *= Mathf.Pow(1f - fHorizontalDampingBasic, Time.deltaTime * 10f);
