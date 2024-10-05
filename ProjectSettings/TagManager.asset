@@ -38,6 +38,9 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background
+    uniqueID: 281442725
+    locked: 0
   - name: Pickup
     uniqueID: 321002155
     locked: 0
