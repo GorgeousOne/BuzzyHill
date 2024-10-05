@@ -18,11 +18,8 @@ public class QueenInteract : Dialog {
 
 	private void TakeFood() {
 		eatenFood = PlayerInteract.Instance.Drop();
+		eatenFood.Freeze();
 		eatenFood.transform.parent = transform;
-		Rigidbody2D rb = eatenFood.GetComponent<Rigidbody2D>();
-		eatenFood.GetComponent<Collider2D>().enabled = false;
-		rb.velocity = Vector2.zero;
-		rb.isKinematic = true;
 		eatenFood.transform.localPosition = Vector3.up;
 		fuel = maxFuel;
 		StartCoroutine(RegenLarva());

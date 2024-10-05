@@ -16,13 +16,13 @@ public class FungusStem : MonoBehaviour {
 			return;
 		}
 		food = Instantiate(foodPrefab, transform).GetComponent<Pickup>();
-		food.OnLiftAction += OnFoodTake;
+		food.OnPickupAction += OnFoodTake;
 
 	}
 
 	private void OnFoodTake(Pickup pickup) {
 		food = null;
-		pickup.OnLiftAction -= OnFoodTake;
+		pickup.OnPickupAction -= OnFoodTake;
 		OnFoodPickup?.Invoke(this);
 	}
 }

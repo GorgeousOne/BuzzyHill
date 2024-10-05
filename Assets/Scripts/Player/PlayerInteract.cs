@@ -78,8 +78,7 @@ public class PlayerInteract : MonoBehaviour {
 		Drop();
 		carrying = thing;
 		thing.transform.parent = head.transform;
-		thing.GetComponent<Collider2D>().enabled = false;
-		thing.GetComponent<Rigidbody2D>().isKinematic = true;
+		thing.Freeze();
 		thing.transform.localPosition = Vector3.up;
 		//TODO put in right position
 	}
@@ -89,10 +88,7 @@ public class PlayerInteract : MonoBehaviour {
 			return null;
 		}
 		carrying.transform.parent = null;
-		carrying.GetComponent<Collider2D>().enabled = true;
-		Rigidbody2D rb = carrying.GetComponent<Rigidbody2D>();
-		rb.isKinematic = false;
-		rb.velocity = rigid.velocity;
+		carrying.UnFreeze(rigid.velocity);
 		Pickup temp = carrying;
 		carrying = null;
 		return temp;

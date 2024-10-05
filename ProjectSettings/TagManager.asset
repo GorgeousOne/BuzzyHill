@@ -44,6 +44,9 @@ TagManager:
   - name: Stage
     uniqueID: 321002155
     locked: 0
+  - name: Drop
+    uniqueID: 1446546135
+    locked: 0
   - name: Highlight
     uniqueID: 1437300407
     locked: 0

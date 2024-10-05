@@ -15,6 +15,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Larva
       objectReference: {fileID: 0}
+    - target: {fileID: 6609061908791464616, guid: 1e52e65bcf19f4f4ca50b9943220f9f3, type: 3}
+      propertyPath: type
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6609061908791464618, guid: 1e52e65bcf19f4f4ca50b9943220f9f3, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -63,5 +67,27 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: e442b4f59bc3c5b4fa34980f589d0d03, type: 3}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6609061908791464616, guid: 1e52e65bcf19f4f4ca50b9943220f9f3, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 1e52e65bcf19f4f4ca50b9943220f9f3, type: 3}
+--- !u!1 &6506834306961818950 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6609061908791464599, guid: 1e52e65bcf19f4f4ca50b9943220f9f3, type: 3}
+  m_PrefabInstance: {fileID: 141003131996362705}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &-5151803343166944684
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6506834306961818950}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c33aabc4d4ce59449e059f44bf817b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  highlightColor: {r: 1, g: 1, b: 1, a: 1}
+  defaultColor: {r: 0.12, g: 0.06, b: 0, a: 1}
+  type: 1
+  eatTime: 40

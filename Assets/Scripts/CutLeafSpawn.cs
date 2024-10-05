@@ -10,10 +10,10 @@ public class CutLeafSpawn : MonoBehaviour {
 
 	void SpawnLeaf(Pickup lastLeaf) {
 		if (lastLeaf != null) {
-			lastLeaf.OnLiftAction -= SpawnLeaf;
+			lastLeaf.OnPickupAction -= SpawnLeaf;
 		}
 
 		Pickup leaf = Instantiate(leafPrefab, transform).GetComponent<Pickup>();
-		leaf.OnLiftAction += SpawnLeaf;
+		leaf.OnPickupAction += SpawnLeaf;
 	}
 }

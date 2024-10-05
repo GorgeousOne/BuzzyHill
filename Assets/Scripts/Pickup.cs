@@ -1,4 +1,5 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public enum PickupType {
@@ -10,15 +11,40 @@ public enum PickupType {
 
 public class Pickup : Interactable {
 	[SerializeField] private PickupType type;
-	public event Action<Pickup> OnLiftAction;
+	public event Action<Pickup> OnPickupAction;
+	protected Rigidbody2D rigid;
+	protected Collider2D collider;
 	
 	public PickupType Type {
 		get { return type; }
 		private set { type = value; }
 	}
+
+	private new void OnEnable() {
+		base.OnEnable();
+		rigid = GetComponent<Rigidbody2D>();
+		collider = GetComponent<Collider2D>();
+	}
+
+	public void Freeze(bool disableGrab=true) {
+		collider.enabled = !disableGrab;
+		rigid.velocity = Vector2.zero;
+		rigid.isKinematic = true;
+	}
+
+	public void UnFreeze(Vector2 velocity) {
+		collider.enabled = true;
+		rigid.isKinematic = false;
+		rigid.velocity = velocity;
+		
+	}
 	
 	public override void OnInteract(PlayerInteract player) {
 		player.PickUp(this);
-		OnLiftAction?.Invoke(this);
+		OnPickupAction?.Invoke(this);
+	}
+
+	protected void EjectSelf() {
+		OnPickupAction?.Invoke(this);
 	}
 }
