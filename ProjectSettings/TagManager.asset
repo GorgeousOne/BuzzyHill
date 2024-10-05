@@ -12,7 +12,7 @@ TagManager:
   - Water
   - UI
   - Solid
-  - Pickup
+  - Interact
   - Grab
   - 
   - 
@@ -41,7 +41,7 @@ TagManager:
   - name: Background
     uniqueID: 281442725
     locked: 0
-  - name: Pickup
+  - name: Stage
     uniqueID: 321002155
     locked: 0
   - name: Highlight

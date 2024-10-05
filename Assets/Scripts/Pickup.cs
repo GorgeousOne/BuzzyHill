@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public enum PickupType {
@@ -9,7 +10,8 @@ public enum PickupType {
 
 public class Pickup : Interactable {
 	[SerializeField] private PickupType type;
-
+	public event Action<Pickup> OnLiftAction;
+	
 	public PickupType Type {
 		get { return type; }
 		private set { type = value; }
@@ -17,5 +19,10 @@ public class Pickup : Interactable {
 	
 	public override void OnInteract(PlayerInteract player) {
 		player.PickUp(this);
+	}
+	
+
+	public void OnPick() {
+		OnLiftAction?.Invoke(this);
 	}
 }

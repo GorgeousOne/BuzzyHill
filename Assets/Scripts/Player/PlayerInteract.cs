@@ -1,10 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerInteract : MonoBehaviour {
-	PlayerControls controls;
 	private Transform grabArea;
 	private Transform head;
 	private List<Interactable> nearInteractables = new();
@@ -21,19 +21,15 @@ public class PlayerInteract : MonoBehaviour {
 	
 	public static PlayerInteract Instance;
 	private bool hasFood { get; }
-	
-	private void OnEnable() {
-		Instance = this;
-		controls = new PlayerControls();
-		controls.Player.Interact.performed += OnInteract;
-		controls.Enable();
 
+	private void Awake() {
+		Instance = this;
 		grabArea = transform.GetChild(0);
 		head = transform.GetChild(1);
 	}
 
-	private void OnDisable() {
-		controls.Disable();
+	private void Start() {
+		gameObject.GetComponent<PlayerMovement>().controls.Player.Interact.performed += PlayerInteract.Instance.OnInteract;
 	}
 
 	public void FocusInteractable(Interactable thing) {
@@ -66,7 +62,7 @@ public class PlayerInteract : MonoBehaviour {
 		UpdateHighlight();
 	}
 	
-	void OnInteract(InputAction.CallbackContext context) {
+	public void OnInteract(InputAction.CallbackContext context) {
 		if (focused == null) {
 			if (carrying) {
 				Drop();
@@ -98,11 +94,11 @@ public class PlayerInteract : MonoBehaviour {
 		return temp;
 	}
 
-	public void OnTalk() {
-		PlayerMovement.Instance.Wait();
+	public void OnStartTalk() {
+		PlayerMovement.Instance.Freeze();
 	}
 
 	public void OnFinishTalk() {
-		PlayerMovement.Instance.Continue();
+		PlayerMovement.Instance.Unfreeze();
 	}
 }

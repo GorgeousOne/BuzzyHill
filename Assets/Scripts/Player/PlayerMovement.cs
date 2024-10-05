@@ -1,11 +1,12 @@
 ﻿using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour {
 
 	public static PlayerMovement Instance;
 	
-	public static PlayerControls controls;
+	public PlayerControls controls;
 	[SerializeField] LayerMask lmWalls;
 	[SerializeField] float fJumpVelocity = 5;
 	
@@ -23,12 +24,8 @@ public class PlayerMovement : MonoBehaviour {
 	[SerializeField] [Range(0, 1)] float fHorizontalDampingWhenTurning = 0.5f;
 
 	[SerializeField] [Range(0, 1)] float fCutJumpHeight = 0.5f;
-
+	
 	private void OnEnable() {
-		Instance = this;
-		controls = new PlayerControls();
-		controls.Player.Jump.performed += _ => jumpPressed = true;
-		controls.Player.Jump.performed += _ => jumpPressed = true;
 		controls.Enable();
 	}
 
@@ -36,8 +33,13 @@ public class PlayerMovement : MonoBehaviour {
 		controls.Disable();
 	}
 
-	void Start() {
+	void Awake() {
+		Instance = this;
 		rigid = GetComponent<Rigidbody2D>();
+		
+		controls = new PlayerControls();
+		controls.Player.Jump.performed += _ => jumpPressed = true;
+		controls.Player.Jump.performed += _ => jumpPressed = true;
 	}
 
 	private bool jumpPressed;
@@ -50,12 +52,19 @@ public class PlayerMovement : MonoBehaviour {
 		horizontalInput = controls.Player.Move.ReadValue<float>();
 	}
 
-	public void Wait() {
+	public void Freeze() {
+		Debug.Log("Freeze");
 		isWaiting = true;
+		controls.Disable();
+		rigid.velocity = Vector2.zero;
+		rigid.isKinematic = true;
 	}
 
-	public void Continue() {
+	public void Unfreeze() {
+		Debug.Log("Melt");
 		isWaiting = false;
+		controls.Enable();
+		rigid.isKinematic = false;
 	}
 	
 	private void FixedUpdate() {

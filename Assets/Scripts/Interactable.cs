@@ -7,7 +7,7 @@ public class Interactable : MonoBehaviour {
 	
 	private SpriteRenderer highlight;
 	
-	private void OnEnable() {
+	protected virtual void OnEnable() {
 		highlight = transform.GetChild(0).GetComponent<SpriteRenderer>();
 	}
 
