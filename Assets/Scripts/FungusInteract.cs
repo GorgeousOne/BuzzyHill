@@ -6,6 +6,7 @@ using Random = UnityEngine.Random;
 public class FungusInteract : Dialog {
 
 	public Transform growth;
+	private Pickup eatenLeaf;
 	private List<FungusStem> foodStems = new();
 	private List<FungusStem> freeStems = new();
 	
@@ -35,8 +36,13 @@ public class FungusInteract : Dialog {
 		yield return new WaitForSeconds(regenTime);
 		SpawnFood();
 
-
-		if (freeStems.Count > 0 && fuel > 0) {
+		if (fuel < 1) {
+			Destroy(eatenLeaf);
+			eatenLeaf = null;
+			isRegenning = false;
+			yield break;
+		}
+		if (freeStems.Count > 0) {
 			StartCoroutine(RegenFood());
 		} else {
 			isRegenning = false;
@@ -44,11 +50,11 @@ public class FungusInteract : Dialog {
 	}
 	
 	private void TakeLeaf() {
-		Pickup food = PlayerInteract.Instance.Drop();
-		food.transform.parent = transform;
-		food.GetComponent<Collider2D>().enabled = false;
-		food.GetComponent<Rigidbody2D>().isKinematic = true;
-		food.transform.localPosition = Vector3.up;
+		eatenLeaf = PlayerInteract.Instance.Drop();
+		eatenLeaf.transform.parent = transform;
+		eatenLeaf.GetComponent<Collider2D>().enabled = false;
+		eatenLeaf.GetComponent<Rigidbody2D>().isKinematic = true;
+		eatenLeaf.transform.localPosition = Vector3.up;
 		fuel = maxFuel;
 
 		if (!isRegenning) {
@@ -69,7 +75,6 @@ public class FungusInteract : Dialog {
 
 	void OnStemFreed(FungusStem stem) {
 		freeStems.Add(stem);
-		
 		if (!isRegenning) {
 			StartCoroutine(RegenFood());
 		}

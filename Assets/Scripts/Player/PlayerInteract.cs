@@ -10,7 +10,8 @@ public class PlayerInteract : MonoBehaviour {
 	private List<Interactable> nearInteractables = new();
 	private Interactable focused;
 	private Pickup carrying;
-
+	private Rigidbody2D rigid;
+	
 	public PickupType PickupType {
 		get
 		{
@@ -26,6 +27,7 @@ public class PlayerInteract : MonoBehaviour {
 		Instance = this;
 		grabArea = transform.GetChild(0);
 		head = transform.GetChild(1);
+		rigid = GetComponent<Rigidbody2D>();
 	}
 
 	private void Start() {
@@ -88,7 +90,9 @@ public class PlayerInteract : MonoBehaviour {
 		}
 		carrying.transform.parent = null;
 		carrying.GetComponent<Collider2D>().enabled = true;
-		carrying.GetComponent<Rigidbody2D>().isKinematic = false;
+		Rigidbody2D rb = carrying.GetComponent<Rigidbody2D>();
+		rb.isKinematic = false;
+		rb.velocity = rigid.velocity;
 		Pickup temp = carrying;
 		carrying = null;
 		return temp;

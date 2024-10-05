@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2623542109690832521}
   - component: {fileID: 4824945451397123480}
   m_Layer: 0
-  m_Name: Growth
+  m_Name: FungusStem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -71,8 +71,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 321002155
+  m_SortingLayer: -3
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
   m_Color: {r: 0.41852084, g: 0.9339623, b: 0.84920806, a: 1}
@@ -97,4 +97,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5f7e2a55ff87d7429ff6f32b695851c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  food: {fileID: 2813998052127841570, guid: de880390d78788642bc8db91aa4dfaff, type: 3}
+  foodPrefab: {fileID: 2813998052127841565, guid: de880390d78788642bc8db91aa4dfaff, type: 3}

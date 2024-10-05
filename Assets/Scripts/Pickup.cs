@@ -19,10 +19,6 @@ public class Pickup : Interactable {
 	
 	public override void OnInteract(PlayerInteract player) {
 		player.PickUp(this);
-	}
-	
-
-	public void OnPick() {
 		OnLiftAction?.Invoke(this);
 	}
 }

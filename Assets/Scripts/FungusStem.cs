@@ -2,8 +2,8 @@ using System;
 using UnityEngine;
 
 public class FungusStem : MonoBehaviour {
-	private GameObject foodPrefab;
-	public Pickup food;
+	public GameObject foodPrefab;
+	private Pickup food;
 	
 	public bool HasFood {
 		get { return food != null; }
@@ -17,6 +17,7 @@ public class FungusStem : MonoBehaviour {
 		}
 		food = Instantiate(foodPrefab, transform).GetComponent<Pickup>();
 		food.OnLiftAction += OnFoodTake;
+
 	}
 
 	private void OnFoodTake(Pickup pickup) {

@@ -73,12 +73,11 @@ public class PlayerMovement : MonoBehaviour {
 		}
 		
 		Vector2 v2GroundedBoxCheckPosition = (Vector2) capsule.bounds.center + new Vector2(0, -0.01f);
-		Vector2 v2GroundedBoxCheckScale = (Vector2) capsule.size + new Vector2(0, -0.02f) ;
+		Vector2 v2GroundedBoxCheckScale = (Vector2) capsule.size + new Vector2(-0.02f, -0.02f);
 		bool bGrounded = Physics2D.OverlapCapsule(v2GroundedBoxCheckPosition, v2GroundedBoxCheckScale, CapsuleDirection2D.Horizontal, 0, lmWalls);
 		
 		fGroundedRemember -= Time.deltaTime;
 		if (bGrounded) {
-			Debug.Log("yay");
 			fGroundedRemember = fGroundedRememberTime;
 		}
 
