@@ -3,7 +3,7 @@ using UnityEngine;
 public class Interactable : MonoBehaviour {
 
 	public Color highlightColor = Color.white;
-	public Color defaultColor = new (31, 15, 0);
+	public Color defaultColor = new (0.12f, 0.06f, 0.00f);
 	
 	private SpriteRenderer highlight;
 	

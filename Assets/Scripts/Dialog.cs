@@ -1,10 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Dialog : Interactable {
+
+	public override void OnInteract(PlayerInteract player) {}
 	
-	public new void OnInteract(GameObject player) {
-		
+	public void ReadOut(params string[] text) {
+		DialogBox.Instance.gameObject.SetActive(true);
+		PlayerMovement.Instance.Wait();
+		DialogBox.Instance.ReadOut(text, PlayerMovement.Instance.Continue);
 	}
 }

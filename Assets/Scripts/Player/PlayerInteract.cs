@@ -9,9 +9,18 @@ public class PlayerInteract : MonoBehaviour {
 	private Transform head;
 	private List<Interactable> nearInteractables = new();
 	private Interactable focused;
-	private Interactable carrying;
+	private Pickup carrying;
+
+	public PickupType PickupType {
+		get
+		{
+			// Check if carrying is not null, then return its type
+			return carrying != null ? carrying.Type : PickupType.None;
+		}
+	}
 	
 	public static PlayerInteract Instance;
+	private bool hasFood { get; }
 	
 	private void OnEnable() {
 		Instance = this;
@@ -51,7 +60,6 @@ public class PlayerInteract : MonoBehaviour {
 		}
 		focused = closest;
 		closest.Highlight();
-		Debug.Log("Focus " + focused);
 	}
 	public void UnfocusInteractable(Interactable thing) {
 		nearInteractables.Remove(thing);
@@ -65,13 +73,11 @@ public class PlayerInteract : MonoBehaviour {
 			}
 			return;
 		}
-		Debug.Log("interact " + focused);
 		focused.OnInteract(this);
 	}
 
-	public void PickUp(Interactable thing) {
+	public void PickUp(Pickup thing) {
 		Drop();
-		Debug.Log("pick up " + thing);
 		carrying = thing;
 		thing.transform.parent = head.transform;
 		thing.GetComponent<Collider2D>().enabled = false;
@@ -80,14 +86,16 @@ public class PlayerInteract : MonoBehaviour {
 		//TODO put in right position
 	}
 
-	private void Drop() {
+	public Pickup Drop() {
 		if (carrying == null) {
-			return;
+			return null;
 		}
 		carrying.transform.parent = null;
 		carrying.GetComponent<Collider2D>().enabled = true;
 		carrying.GetComponent<Rigidbody2D>().isKinematic = false;
+		Pickup temp = carrying;
 		carrying = null;
+		return temp;
 	}
 
 	public void OnTalk() {

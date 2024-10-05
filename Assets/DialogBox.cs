@@ -4,13 +4,17 @@ using UnityEngine;
 using TMPro;
 
 public class DialogBox : MonoBehaviour {
+
+	public static DialogBox Instance;
+	
 	public TextMeshProUGUI textComp;
 	public string[] lines;
 	public float textSpeed;
 
 	private int index;
 	private DialogControls controls;
-
+	private Action afterTextCall;
+	
 	private void OnEnable() {
 		controls = new DialogControls();
 		controls.Dialog.Skip.performed += _ => SkipLine();
@@ -23,8 +27,9 @@ public class DialogBox : MonoBehaviour {
 
 	// Start is called before the first frame update
 	void Start() {
+		Instance = this;
 		textComp.text = string.Empty;
-		StartDialog();
+		gameObject.SetActive(false);
 	}
 
 	void StartDialog() {
@@ -39,6 +44,13 @@ public class DialogBox : MonoBehaviour {
 		}
 	}
 
+	public void ReadOut(string[] text, Action afterText) {
+		index = 0;
+		lines = text;
+		afterTextCall = afterText;
+		StartDialog();
+	}
+	
 	void SkipLine() {
 		if (textComp.text == lines[index]) {
 			NextLine();
@@ -51,14 +63,15 @@ public class DialogBox : MonoBehaviour {
 	}
 	
 	void NextLine() {
-		if (index < lines.Length-1) {
+		if (lines == null || index < lines.Length-1) {
 			index++;
 			textComp.text = string.Empty;
 			StartCoroutine(TypeLine());
 		}
 		else {
+			textComp.text = string.Empty;
 			gameObject.SetActive(false);
-			//TODO  continue game
+			afterTextCall?.Invoke();
 		}
 	}
 }

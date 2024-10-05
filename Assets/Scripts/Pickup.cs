@@ -1,7 +1,20 @@
 using UnityEngine;
 
-public class Pickup : Interactable {
+public enum PickupType {
+	Food,
+	Larva,
+	Leaf,
+	None
+}
 
+public class Pickup : Interactable {
+	[SerializeField] private PickupType type;
+
+	public PickupType Type {
+		get { return type; }
+		private set { type = value; }
+	}
+	
 	public override void OnInteract(PlayerInteract player) {
 		player.PickUp(this);
 	}
