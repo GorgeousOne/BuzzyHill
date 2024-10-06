@@ -11,12 +11,18 @@ public class Interactable : MonoBehaviour {
 		highlight = transform.GetChild(0).GetComponent<SpriteRenderer>();
 	}
 
-	private void OnTriggerEnter2D(Collider2D other) {
-		PlayerInteract.Instance.FocusInteractable(this);
+	protected virtual void OnTriggerEnter2D(Collider2D other) {
+		//grab layer
+		if (other.gameObject.layer == 9) {
+			PlayerInteract.Instance.FocusInteractable(this);
+		}
 	}
 
-	private void OnTriggerExit2D(Collider2D other) {
-		PlayerInteract.Instance.UnfocusInteractable(this);
+	protected virtual void OnTriggerExit2D(Collider2D other) {
+		//grab layer
+		if (other.gameObject.layer == 9) {
+			PlayerInteract.Instance.UnfocusInteractable(this);
+		}
 	}
 
 	public void Highlight() {

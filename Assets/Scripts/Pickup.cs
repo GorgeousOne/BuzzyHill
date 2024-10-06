@@ -13,7 +13,7 @@ public class Pickup : Interactable {
 	[SerializeField] private PickupType type;
 	public event Action<Pickup> OnPickupAction;
 	protected Rigidbody2D rigid;
-	protected Collider2D collider;
+	protected Collider2D collid;
 	
 	public PickupType Type {
 		get { return type; }
@@ -23,17 +23,17 @@ public class Pickup : Interactable {
 	private new void OnEnable() {
 		base.OnEnable();
 		rigid = GetComponent<Rigidbody2D>();
-		collider = GetComponent<Collider2D>();
+		collid = GetComponent<Collider2D>();
 	}
 
 	public void Freeze(bool disableGrab=true) {
-		collider.enabled = !disableGrab;
+		collid.enabled = !disableGrab;
 		rigid.velocity = Vector2.zero;
 		rigid.isKinematic = true;
 	}
 
 	public void UnFreeze(Vector2 velocity) {
-		collider.enabled = true;
+		collid.enabled = true;
 		rigid.isKinematic = false;
 		rigid.velocity = velocity;
 		
