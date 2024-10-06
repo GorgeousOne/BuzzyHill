@@ -14,6 +14,7 @@ public class Pickup : Interactable {
 	public event Action<Pickup> OnPickupAction;
 	protected Rigidbody2D rigid;
 	protected Collider2D collid;
+	protected Collider2D childCollid;
 	
 	public PickupType Type {
 		get { return type; }
@@ -24,19 +25,21 @@ public class Pickup : Interactable {
 		base.OnEnable();
 		rigid = GetComponent<Rigidbody2D>();
 		collid = GetComponent<Collider2D>();
+		childCollid = transform.GetChild(0).GetComponent<Collider2D>();
 	}
 
 	public void Freeze(bool disableGrab=true) {
 		collid.enabled = !disableGrab;
+		childCollid.enabled = !disableGrab;
 		rigid.velocity = Vector2.zero;
 		rigid.isKinematic = true;
 	}
 
 	public void UnFreeze(Vector2 velocity) {
 		collid.enabled = true;
+		childCollid.enabled = true;
 		rigid.isKinematic = false;
 		rigid.velocity = velocity;
-		
 	}
 	
 	public override void OnInteract(PlayerInteract player) {

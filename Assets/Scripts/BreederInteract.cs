@@ -4,9 +4,9 @@ using UnityEngine;
 public class BreederInteract : Interactable {
 
 	private LarvaInteract storedLarva;
-	private Collider2D collider;
+	private Collider2D collid;
 	private void Awake() {
-		collider = GetComponent<Collider2D>();
+		collid = GetComponent<Collider2D>();
 	}
 
 	private bool IsFree {
@@ -14,21 +14,39 @@ public class BreederInteract : Interactable {
 	}
 	
 	private void TakeLarva() {
-		collider.enabled = false;
-		storedLarva = PlayerInteract.Instance.Drop().transform.GetComponent<LarvaInteract>();
+		StoreLarva(PlayerInteract.Instance.Drop().transform.GetComponent<LarvaInteract>());
+	}
+
+	private void StoreLarva(LarvaInteract larva) {
+		collid.enabled = false;
+		storedLarva = larva;
 		storedLarva.IsStored = true;
 		storedLarva.Freeze(false);
 		storedLarva.transform.parent = transform;
 		storedLarva.OnPickupAction += FreeStoredLarva;
 		storedLarva.transform.localPosition = Vector3.zero;
 	}
+	
+	protected override void OnTriggerEnter2D(Collider2D other) {
+		base.OnTriggerEnter2D(other);
+		if (!IsFree) {
+			return;
+		}
+		//pickup layer
+		if (other.gameObject.layer != 8) {
+			return;
+		}
+		Pickup pickup = other.transform.parent.GetComponent<Pickup>();
 
-
+		if (pickup.Type == PickupType.Larva) {
+			StoreLarva(other.transform.parent.GetComponent<LarvaInteract>());
+		}
+	}
 
 	private void FreeStoredLarva(Pickup larva) {
 		larva.OnPickupAction -= FreeStoredLarva;
 		storedLarva = null;
-		collider.enabled = true;
+		collid.enabled = true;
 	}
 	
 	public override void OnInteract(PlayerInteract player) {
@@ -37,10 +55,6 @@ public class BreederInteract : Interactable {
 		}
 		if (IsFree) {
 			TakeLarva();
-			Debug.Log("take");
-		}
-		else {
-			Debug.Log("oh no");
 		}
 	}
 }

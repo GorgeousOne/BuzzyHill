@@ -19,12 +19,7 @@ public class QueenInteract : Dialog {
 	}
 
 	private void TakeFood() {
-		eatenFood = PlayerInteract.Instance.Drop();
-		eatenFood.Freeze();
-		eatenFood.transform.parent = transform;
-		eatenFood.transform.localPosition = Vector3.up;
-		fuel = maxFuel;
-		StartCoroutine(RegenLarva());
+		EatFood(PlayerInteract.Instance.Drop());
 	}
 	
 	IEnumerator RegenLarva() {
@@ -32,7 +27,8 @@ public class QueenInteract : Dialog {
 		SpawnLarva(null);
 		Debug.Log("left " + fuel);
 		if (fuel < 1) {
-			Destroy(eatenFood);
+			Debug.Log("destroy!");
+			Destroy(eatenFood.gameObject);
 			eatenFood = null;
 			yield break;
 		}
@@ -45,28 +41,28 @@ public class QueenInteract : Dialog {
 		fuel -= 1;
 	}
 
+	void EatFood(Pickup food) {
+		eatenFood = food;
+		eatenFood.Freeze();
+		eatenFood.transform.parent = transform;
+		eatenFood.transform.localPosition = Vector3.up;
+		fuel = maxFuel;
+		StartCoroutine(RegenLarva());
+	}
+
 	protected override void OnTriggerEnter2D(Collider2D other) {
 		base.OnTriggerEnter2D(other);
-		Debug.Log(IsHungry);
-		// if (!IsHungry) {
-		// 	return;
-		// }
-		
+		if (!IsHungry) {
+			return;
+		}
 		//pickup layer
 		if (other.gameObject.layer != 8) {
 			return;
 		}
-
-		Debug.Log("am hungry " + IsHungry);
 		Pickup pickup = other.transform.parent.GetComponent<Pickup>();
-		Debug.Log(pickup);
 
 		if (pickup.Type == PickupType.Food) {
-			pickup.Freeze();
-			pickup.transform.parent = transform;
-			pickup.transform.localPosition = Vector3.up;
-			fuel = maxFuel;
-			StartCoroutine(RegenLarva());
+			EatFood(pickup);
 		}
 	}
 
