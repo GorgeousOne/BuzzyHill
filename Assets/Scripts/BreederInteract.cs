@@ -24,7 +24,7 @@ public class BreederInteract : Interactable {
 		storedLarva.Freeze(false);
 		storedLarva.transform.parent = transform;
 		storedLarva.OnPickupAction += FreeStoredLarva;
-		storedLarva.transform.localPosition = Vector3.zero;
+		storedLarva.transform.localPosition = Vector3.down * 0.2f;
 	}
 	
 	protected override void OnTriggerEnter2D(Collider2D other) {

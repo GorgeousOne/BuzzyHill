@@ -111,7 +111,7 @@ public class FungusInteract : Interactable {
 		eatenLeaf = food;
 		eatenLeaf.Freeze();
 		eatenLeaf.transform.parent = transform;
-		eatenLeaf.transform.localPosition = Vector3.up;
+		eatenLeaf.transform.localPosition = new Vector2(-0.42f, 0.26f);
 
 		fuel = maxFuel;
 		starveTimer = 0;

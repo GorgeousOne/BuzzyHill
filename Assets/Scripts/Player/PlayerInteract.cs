@@ -78,7 +78,7 @@ public class PlayerInteract : MonoBehaviour {
 		carrying = thing;
 		thing.transform.parent = head.transform;
 		thing.Freeze();
-		thing.transform.localPosition = Vector3.up;
+		thing.transform.localPosition = new Vector2(-0.76f, -0.04f);
 		//TODO put in right position
 	}
 

@@ -9,6 +9,7 @@ public class Interactable : MonoBehaviour {
 	
 	protected virtual void OnEnable() {
 		highlight = transform.GetChild(0).GetComponent<SpriteRenderer>();
+		UnHighlight();
 	}
 
 	protected virtual void OnTriggerEnter2D(Collider2D other) {

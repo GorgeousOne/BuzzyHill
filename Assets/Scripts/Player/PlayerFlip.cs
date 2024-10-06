@@ -15,13 +15,24 @@ public class PlayerFlip : MonoBehaviour {
 
 	void Update() {
 		if (Mathf.Abs(horizontalInput) > 0.01f) {
+			bool flipX = Mathf.Sign(horizontalInput) < 0;
 			if (flipRenderer) {
-				_renderer.flipX = Mathf.Sign(horizontalInput) < 0;
+				_renderer.flipX = flipX;
 			}
-			else {
+			// else {
 				transform.localPosition = new Vector2(v2LocalPosStart.x * Mathf.Sign(horizontalInput),
 					transform.localPosition.y);
-			}
+			// }
+			FlipChildren(flipX);
+		}
+	}
+	
+	void FlipChildren(bool flipX) {
+		foreach (Transform child in transform) {
+			// Reverse the local scale along the X-axis to flip the child
+			Vector3 childPos = child.localPosition;
+			childPos.x = Mathf.Abs(childPos.x) * (flipX ? -1 : 1); // Flip based on the parent's direction
+			child.localPosition = childPos;
 		}
 	}
 }

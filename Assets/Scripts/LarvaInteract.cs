@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -26,6 +27,7 @@ public class LarvaInteract : Pickup {
 	public float starveTime = 40;
 	private Pickup eatenFood;
 	private float starveTimer;
+	private bool hasWarnedStarve = false;
 	
 	private void Update() {
 		if (IsStored && !IsHungry) {
@@ -33,8 +35,17 @@ public class LarvaInteract : Pickup {
 		}
 		if (IsHungry && !GameLogic.Instance.TimerPaused) {
 			starveTimer += Time.deltaTime;
+			
+			if (starveTimer > starveTime / 2 && !hasWarnedStarve) {
+				hasWarnedStarve = true;
+				ReadOut("Waaah! I'm sp hugry!");
+			}
+			
 			if (starveTimer > starveTime) {
-				Die();				
+				if (isStored) {
+					ReadOut("OMG! You can't just let them starve! Bring them food!");
+				}
+				Die();
 			}
 		}
 		if (breedTime < 0) {
@@ -74,7 +85,7 @@ public class LarvaInteract : Pickup {
 		yield return new WaitForSeconds(eatTime);
 		Destroy(eatenFood.gameObject);
 		eatenFood = null;
-		ReadOut("Waaaaah! More food!");
+		ReadOut("Waaah! More food!");
 		//TODO look hungry
 	}
 	

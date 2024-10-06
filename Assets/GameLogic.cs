@@ -30,7 +30,7 @@ public class GameLogic : MonoBehaviour {
 		
 		showTutorial = PlayerPrefs.GetInt("ShowTutorial", 1) == 1;
 		
-		if (showTutorial && false) {
+		if (showTutorial) {
 			ReadTutorial();
 		}
 	}
@@ -81,9 +81,9 @@ public class GameLogic : MonoBehaviour {
 		antCounter++;
 		antsLabel.text = antCounter + "/" + numAntsWin;
 		
-		if (antCounter > numAntsWin) {
+		if (antCounter >= numAntsWin) {
 			Time.timeScale = 0;
-			// TimerPaused = true;
+			TimerPaused = true;
 			winScreen.SetActive(true);
 		}
 	}

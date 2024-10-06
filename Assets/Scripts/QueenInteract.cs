@@ -66,7 +66,7 @@ public class QueenInteract : Interactable {
 		eatenFood = food;
 		eatenFood.Freeze();
 		eatenFood.transform.parent = transform;
-		eatenFood.transform.localPosition = Vector3.up;
+		eatenFood.transform.localPosition = new Vector2(0.6f, -0.52f);
 
 		fuel = maxFuel;
 		starveTimer = 0;
