@@ -2,11 +2,11 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class QueenInteract : Dialog {
+public class QueenInteract : Interactable {
 
 	public GameObject larvaPrefab;
 	public int maxFuel = 6;
-	public int fuel;
+	private int fuel;
 	public float regenTime = 20;
 	private Pickup eatenFood;
 	
@@ -29,9 +29,7 @@ public class QueenInteract : Dialog {
 
 			if (starveTimer > starveTime / 2 && !hasWarnedStarve) {
 				hasWarnedStarve = true;
-				ReadOut(
-					"Sweetie, mind bringing me some food?", 
-					String.Format("I feel like I'm starving in the next {0} seconds.", starveTime - starveTimer));
+				ReadOut(String.Format("Gurl, I feel like I'm starving in the next {0} seconds.", starveTime - starveTimer));
 			}
 			if (starveTimer > starveTime && !isDead) {
 				isDead = true;
@@ -48,9 +46,8 @@ public class QueenInteract : Dialog {
 	IEnumerator RegenLarva() {
 		yield return new WaitForSeconds(regenTime);
 		SpawnLarva(null);
-		Debug.Log("left " + fuel);
 		if (fuel < 1) {
-			Debug.Log("destroy!");
+			ReadOut("Sweetie, mind bringing me some more of that delicious fruit?");
 			Destroy(eatenFood.gameObject);
 			eatenFood = null;
 			yield break;
@@ -62,6 +59,7 @@ public class QueenInteract : Dialog {
 		Pickup larva = Instantiate(larvaPrefab, transform.position+(Vector3.up*4), Quaternion.identity).GetComponent<Pickup>();
 		// larva.OnLiftAction += SpawnLarva;
 		fuel -= 1;
+		ReadOut("Isn't she an angel! Can you take her upstairs?");
 	}
 
 	void EatFood(Pickup food) {
@@ -73,7 +71,8 @@ public class QueenInteract : Dialog {
 		fuel = maxFuel;
 		starveTimer = 0;
 		hasWarnedStarve = false;
-		
+
+		ReadOut("Yummy!");
 		StartCoroutine(RegenLarva());
 	}
 
@@ -98,7 +97,6 @@ public class QueenInteract : Dialog {
 			case PickupType.Food:
 				if (IsHungry) {
 					TakeFood();
-					ReadOut("Yummy!");
 				}
 				else {
 					ReadOut("Ah thanks, but I'm good right now hun!");

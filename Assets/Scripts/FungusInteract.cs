@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class FungusInteract : Dialog {
+public class FungusInteract : Interactable {
 
 	public Transform growth;
 	private Pickup eatenLeaf;
@@ -12,7 +12,7 @@ public class FungusInteract : Dialog {
 	private List<FungusStem> freeStems = new();
 	
 	public int maxFuel = 6;
-	public int fuel;
+	private int fuel;
 	public float regenTime = 10;
 	private float currentTime;
 	private bool isRegenning;
@@ -36,20 +36,13 @@ public class FungusInteract : Dialog {
 		}
 	}
 
-	protected override void OnEnable() {
-		base.OnEnable();
-		StartCoroutine(RegenFood());
-	}
-
 	private void Update() {
 		if (IsHungry && !GameLogic.Instance.TimerPaused) {
 			starveTimer += Time.deltaTime;
 
 			if (starveTimer > starveTime / 2 && !hasWarnedStarve) {
 				hasWarnedStarve = true;
-				ReadOut(
-					"Oh goodness, I sure could use a leaf right now.", 
-					String.Format("I don't know if I can make it {0} seconds anymore.", starveTime - starveTimer));
+				ReadOut(String.Format("Oh boy, I don't know if I can make it {0} seconds anymore.", starveTime - starveTimer));
 			}
 			if (starveTimer > starveTime && !isDead) {
 				isDead = true;
@@ -65,9 +58,12 @@ public class FungusInteract : Dialog {
 		SpawnFood();
 
 		if (fuel < 1) {
-			Destroy(eatenLeaf);
-			eatenLeaf = null;
+			if (eatenLeaf != null) {
+				Destroy(eatenLeaf.gameObject);
+				eatenLeaf = null;
+			}
 			isRegenning = false;
+			ReadOut("That leaf was splendid! Do you happen to have more where that came from?");
 			yield break;
 		}
 		StartCoroutine(RegenFood());
@@ -124,6 +120,7 @@ public class FungusInteract : Dialog {
 		if (!isRegenning) {
 			StartCoroutine(RegenFood());
 		}
+		ReadOut("MOMPF!");
 	}
 
 	public override void OnInteract(PlayerInteract player) {
@@ -137,7 +134,6 @@ public class FungusInteract : Dialog {
 			case PickupType.Leaf:
 				if (IsHungry) {
 					TakeLeaf();
-					ReadOut("MOMPF!");
 				}
 				break;
 			case PickupType.None:

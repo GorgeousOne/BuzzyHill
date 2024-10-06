@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 public class MainMenu : MonoBehaviour {
 
 	public void StartGame() {
+		PlayerPrefs.SetInt("ShowTutorial", 1);
 		SceneManager.LoadScene("Game");
 	}
 

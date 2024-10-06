@@ -38,4 +38,10 @@ public class Interactable : MonoBehaviour {
 	protected virtual void Die() {
 		Instantiate(ghostPrefab, transform.position, Quaternion.identity);
 	}
+	
+	public void ReadOut(params string[] text) {
+		DialogBox.Instance.gameObject.SetActive(true);
+		PlayerInteract.Instance.OnStartTalk();
+		DialogBox.Instance.ReadOut(text, gameObject, PlayerInteract.Instance.OnFinishTalk);
+	}
 }

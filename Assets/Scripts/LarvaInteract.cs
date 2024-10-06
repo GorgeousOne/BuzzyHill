@@ -4,7 +4,19 @@ using UnityEngine;
 public class LarvaInteract : Pickup {
 
 	public GameObject npcPrefab;
-	public bool IsStored { get; set;}
+	private bool isStored;
+	
+	public bool IsStored {
+		get { return isStored;}
+		set {
+			if (isStored != value) // Check if the value is actually changing
+			{
+				isStored = value; // Set the new value
+				starveTimer = 0;
+			}
+		}
+	}
+
 	public bool IsHungry {
 		get { return eatenFood == null; }
 	}
@@ -62,6 +74,7 @@ public class LarvaInteract : Pickup {
 		yield return new WaitForSeconds(eatTime);
 		Destroy(eatenFood.gameObject);
 		eatenFood = null;
+		ReadOut("Waaaaah! More food!");
 		//TODO look hungry
 	}
 	

@@ -11,6 +11,9 @@ public class NpcWalk : MonoBehaviour {
 	private void OnEnable() {
 		rigid = GetComponent<Rigidbody2D>();
 		StartCoroutine(WalkRandomly());
+		DialogBox.Instance.gameObject.SetActive(true);
+		PlayerInteract.Instance.OnStartTalk();
+		DialogBox.Instance.ReadOut(new[] {"Another strong warrior in our rows!"}, gameObject, PlayerInteract.Instance.OnFinishTalk);
 	}
 
 	IEnumerator WalkRandomly() {

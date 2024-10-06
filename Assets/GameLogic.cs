@@ -3,11 +3,13 @@ using UnityEngine;
 
 public class GameLogic : MonoBehaviour {
 	public int numAntsWin = 10;
-	public int timeLimit = 5;
+	public int timeLimit = 10;
 
 	public TextMeshProUGUI antsLabel;
 	public TextMeshProUGUI countdownLabel;
-
+	public GameObject winScreen;
+	public GameObject loseScreen;
+	
 	public static GameLogic Instance;
 	private int antCounter;
 	private float startTime;
@@ -17,23 +19,20 @@ public class GameLogic : MonoBehaviour {
 	public bool TimerPaused { get; set; }
 	
 	void Awake() {
-		if (Instance == null) {
-			Instance = this;
-			DontDestroyOnLoad(gameObject);
-		}
-		else {
-			Destroy(gameObject); 
-		}
+		Instance = this;
 	}
 
 	private void Start() {
-		showTutorial = PlayerPrefs.GetInt("ShowTutorial", 1) == 1;  
-
-		if (showTutorial && false) {
+		Time.timeScale = 1;
+		antCounter = -1;
+		startTime = Time.time;
+		NotifyAntSpawn();
+		
+		showTutorial = PlayerPrefs.GetInt("ShowTutorial", 1) == 1;
+		
+		if (showTutorial) {
 			ReadTutorial();
 		}
-		antCounter = 0;
-		startTime = Time.time;
 	}
 
 	private void ReadTutorial() {
@@ -56,7 +55,7 @@ public class GameLogic : MonoBehaviour {
 		PlayerPrefs.SetInt("ShowTutorial", 0);
 		UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
 	}
-
+	
 	private void Update() {
 		if (TimerPaused) {
 			startTime += Time.deltaTime;
@@ -64,7 +63,7 @@ public class GameLogic : MonoBehaviour {
 		}
 		float timeLeft = timeLimit * 60 - (Time.time - startTime);
 		if (timeLeft < 0) {
-			HandleLose();
+			GameOver("Time's up. The queen's patience has worn thin.");
 		}
 
 		int minutes = Mathf.FloorToInt(timeLeft / 60f); // Divide total seconds by 60 to get minutes
@@ -73,16 +72,21 @@ public class GameLogic : MonoBehaviour {
 	}
 
 	public void GameOver(string message) {
-		Debug.Log("help, game over" + message);	
+		Time.timeScale = 0;
+		TimerPaused = true;
+		loseScreen.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = message;
+		loseScreen.SetActive(true);
 	}
-	
-	private void HandleLose() { }
 
+	
 	public void NotifyAntSpawn() {
 		antCounter++;
-
+		antsLabel.text = antCounter + "/" + numAntsWin;
+		
 		if (antCounter > numAntsWin) {
-			//TODO win
+			Time.timeScale = 0;
+			// TimerPaused = true;
+			winScreen.SetActive(true);
 		}
 	}
 }

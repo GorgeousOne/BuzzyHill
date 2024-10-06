@@ -92,6 +92,6 @@ MonoBehaviour:
   ghostPrefab: {fileID: 1658547369639496406, guid: fabf255694e89f442a761756d1778256, type: 3}
   type: 1
   npcPrefab: {fileID: 298947139983953359, guid: 397f30a0256d5fa458afc15a70cd1bc1, type: 3}
-  eatTime: 1
-  breedTime: 2
-  starveTime: 40
+  eatTime: 20
+  breedTime: 40
+  starveTime: 30
