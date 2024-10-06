@@ -89,5 +89,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   highlightColor: {r: 1, g: 1, b: 1, a: 1}
   defaultColor: {r: 0.12, g: 0.06, b: 0, a: 1}
+  ghostPrefab: {fileID: 1658547369639496406, guid: fabf255694e89f442a761756d1778256, type: 3}
   type: 1
-  eatTime: 40
+  npcPrefab: {fileID: 298947139983953359, guid: 397f30a0256d5fa458afc15a70cd1bc1, type: 3}
+  eatTime: 1
+  breedTime: 2
+  starveTime: 40

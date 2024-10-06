@@ -32,6 +32,7 @@ public class Pickup : Interactable {
 		collid.enabled = !disableGrab;
 		childCollid.enabled = !disableGrab;
 		rigid.velocity = Vector2.zero;
+		rigid.freezeRotation = true;
 		rigid.isKinematic = true;
 	}
 
@@ -39,6 +40,7 @@ public class Pickup : Interactable {
 		collid.enabled = true;
 		childCollid.enabled = true;
 		rigid.isKinematic = false;
+		rigid.freezeRotation = false;
 		rigid.velocity = velocity;
 	}
 	

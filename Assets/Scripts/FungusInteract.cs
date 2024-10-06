@@ -15,6 +15,9 @@ public class FungusInteract : Dialog {
 	public float regenTime = 10;
 	private float currentTime;
 	private bool isRegenning;
+	public bool IsHungry {
+		get { return fuel < 1; }
+	}
 	
 	private void Start() {
 		for (int i = 0; i < growth.childCount; ++i) {
@@ -23,7 +26,6 @@ public class FungusInteract : Dialog {
 			freeStems.Add(stem);
 			stem.OnFoodPickup += OnStemFreed;
 		}
-		fuel = maxFuel;
 	}
 
 	protected override void OnEnable() {
@@ -45,21 +47,14 @@ public class FungusInteract : Dialog {
 		if (freeStems.Count > 0) {
 			StartCoroutine(RegenFood());
 		} else {
+			Destroy(eatenLeaf.gameObject);
+			eatenLeaf = null;
 			isRegenning = false;
 		}
 	}
 	
 	private void TakeLeaf() {
-		eatenLeaf = PlayerInteract.Instance.Drop();
-		eatenLeaf.transform.parent = transform;
-		eatenLeaf.GetComponent<Collider2D>().enabled = false;
-		eatenLeaf.GetComponent<Rigidbody2D>().isKinematic = true;
-		eatenLeaf.transform.localPosition = Vector3.up;
-		fuel = maxFuel;
-
-		if (!isRegenning) {
-			StartCoroutine(RegenFood());
-		}
+		EatLeaf(PlayerInteract.Instance.Drop());
 	}
 
 	void SpawnFood() {
@@ -75,6 +70,34 @@ public class FungusInteract : Dialog {
 
 	void OnStemFreed(FungusStem stem) {
 		freeStems.Add(stem);
+		if (!isRegenning) {
+			StartCoroutine(RegenFood());
+		}
+	}
+	
+	protected override void OnTriggerEnter2D(Collider2D other) {
+		base.OnTriggerEnter2D(other);
+		if (!IsHungry) {
+			return;
+		}
+		//pickup layer
+		if (other.gameObject.layer != 8) {
+			return;
+		}
+		Pickup pickup = other.transform.parent.GetComponent<Pickup>();
+
+		if (pickup.Type == PickupType.Leaf) {
+			EatLeaf(pickup);
+		}
+	}
+	
+	void EatLeaf(Pickup food) {
+		eatenLeaf = food;
+		eatenLeaf.Freeze();
+		eatenLeaf.transform.parent = transform;
+		eatenLeaf.transform.localPosition = Vector3.up;
+		fuel = maxFuel;
+		
 		if (!isRegenning) {
 			StartCoroutine(RegenFood());
 		}

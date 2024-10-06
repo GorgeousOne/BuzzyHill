@@ -1,9 +1,10 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class LarvaInteract : Pickup {
-	
+
+	public GameObject npcPrefab;
 	public bool IsStored { get; set;}
 	public bool IsHungry {
 		get { return eatenFood == null; }
@@ -11,29 +12,55 @@ public class LarvaInteract : Pickup {
 	
 	public float eatTime = 40;
 	public float breedTime = 80;
+	public float starveTime = 40;
 	private Pickup eatenFood;
+	private float starveTimer;
 	
 	private void Update() {
 		if (IsStored && !IsHungry) {
 			breedTime -= Time.deltaTime;
 		}
-		if (breedTime <= 0) {
+		if (IsHungry) {
+			starveTimer += Time.deltaTime;
+			if (starveTimer > starveTime) {
+				Die();				
+			}
+		}
+		if (breedTime < 0) {
 			//signal disappearing to breeder
 			EjectSelf();
+			Instantiate(npcPrefab, transform.position, Quaternion.identity);
 			Destroy(gameObject);
 		}
 	}
-	private void TakeFood() {
-		eatenFood = PlayerInteract.Instance.Drop();
+	private void TakeFood(Pickup pickup) {
+		eatenFood = pickup;
 		eatenFood.Freeze();
 		eatenFood.transform.parent = transform;
 		eatenFood.transform.localPosition = Vector3.zero;
 		StartCoroutine(EatFood());
 	}
+	
+	protected override void OnTriggerEnter2D(Collider2D other) {
+		base.OnTriggerEnter2D(other);
+		if (!IsHungry || !IsStored) {
+			return;
+		}
+		//pickup layer
+		if (other.gameObject.layer != 8) {
+			return;
+		}
+		Pickup pickup = other.transform.parent.GetComponent<Pickup>();
 
+		if (pickup.Type == PickupType.Food) {
+			TakeFood(pickup);
+		}
+	}
+	
 	IEnumerator EatFood() {
+		starveTimer = 0;
 		yield return new WaitForSeconds(eatTime);
-		Destroy(eatenFood);
+		Destroy(eatenFood.gameObject);
 		eatenFood = null;
 		//TODO look hungry
 	}
@@ -45,10 +72,16 @@ public class LarvaInteract : Pickup {
 		if (other == PickupType.Food && IsStored) {
 			//eat food if hungry
 			if (IsHungry) {
-				TakeFood();
+				TakeFood(PlayerInteract.Instance.Drop());
 			}
 			return;
 		}
 		base.OnInteract(player);
+	}
+
+	protected override void Die() {
+		base.Die();
+		EjectSelf();
+		Destroy(gameObject);
 	}
 }

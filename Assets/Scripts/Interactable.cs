@@ -4,7 +4,7 @@ public class Interactable : MonoBehaviour {
 
 	public Color highlightColor = Color.white;
 	public Color defaultColor = new (0.12f, 0.06f, 0.00f);
-	
+	public GameObject ghostPrefab;
 	private SpriteRenderer highlight;
 	
 	protected virtual void OnEnable() {
@@ -33,5 +33,9 @@ public class Interactable : MonoBehaviour {
 	}
 	public virtual void OnInteract(PlayerInteract player) {
 		
+	}
+
+	protected virtual void Die() {
+		Instantiate(ghostPrefab, transform.position, Quaternion.identity);
 	}
 }

@@ -118,6 +118,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   highlightColor: {r: 1, g: 1, b: 1, a: 1}
   defaultColor: {r: 0.122641504, g: 0.0603576, b: 0, a: 1}
+  ghostPrefab: {fileID: 1658547369639496406, guid: fabf255694e89f442a761756d1778256, type: 3}
   type: 0
 --- !u!50 &6609061908791464617
 Rigidbody2D:

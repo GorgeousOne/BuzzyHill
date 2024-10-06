@@ -15,7 +15,7 @@ TagManager:
   - Interact
   - Pickup
   - Grab
-  - 
+  - Untouchable
   - 
   - 
   - 
@@ -40,6 +40,9 @@ TagManager:
   m_SortingLayers:
   - name: Background
     uniqueID: 281442725
+    locked: 0
+  - name: Shadows
+    uniqueID: 3075826371
     locked: 0
   - name: Stage
     uniqueID: 321002155
