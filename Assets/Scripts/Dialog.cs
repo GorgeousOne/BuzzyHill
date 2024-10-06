@@ -7,6 +7,6 @@ public class Dialog : Interactable {
 	public void ReadOut(params string[] text) {
 		DialogBox.Instance.gameObject.SetActive(true);
 		PlayerInteract.Instance.OnStartTalk();
-		DialogBox.Instance.ReadOut(text, PlayerInteract.Instance.OnFinishTalk);
+		DialogBox.Instance.ReadOut(text, gameObject, PlayerInteract.Instance.OnFinishTalk);
 	}
 }

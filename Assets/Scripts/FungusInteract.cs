@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,6 +16,13 @@ public class FungusInteract : Dialog {
 	public float regenTime = 10;
 	private float currentTime;
 	private bool isRegenning;
+	
+	public float starveTime = 40;
+	private float starveTimer;
+	private bool hasWarnedStarve = false;
+	private bool isDead = false;
+	
+	
 	public bool IsHungry {
 		get { return fuel < 1; }
 	}
@@ -33,6 +41,24 @@ public class FungusInteract : Dialog {
 		StartCoroutine(RegenFood());
 	}
 
+	private void Update() {
+		if (IsHungry && !GameLogic.Instance.TimerPaused) {
+			starveTimer += Time.deltaTime;
+
+			if (starveTimer > starveTime / 2 && !hasWarnedStarve) {
+				hasWarnedStarve = true;
+				ReadOut(
+					"Oh goodness, I sure could use a leaf right now.", 
+					String.Format("I don't know if I can make it {0} seconds anymore.", starveTime - starveTimer));
+			}
+			if (starveTimer > starveTime && !isDead) {
+				isDead = true;
+				Die();
+				GameLogic.Instance.GameOver("Good 'ol Mr. Fungus has starved :(((");
+			}
+		}
+	}
+
 	IEnumerator RegenFood() {
 		isRegenning = true;
 		yield return new WaitForSeconds(regenTime);
@@ -44,12 +70,7 @@ public class FungusInteract : Dialog {
 			isRegenning = false;
 			yield break;
 		}
-		if (freeStems.Count > 0) {
-			StartCoroutine(RegenFood());
-		} else {
-			eatenLeaf = null;
-			isRegenning = false;
-		}
+		StartCoroutine(RegenFood());
 	}
 	
 	private void TakeLeaf() {
@@ -95,8 +116,11 @@ public class FungusInteract : Dialog {
 		eatenLeaf.Freeze();
 		eatenLeaf.transform.parent = transform;
 		eatenLeaf.transform.localPosition = Vector3.up;
+
 		fuel = maxFuel;
-		
+		starveTimer = 0;
+		hasWarnedStarve = false;
+
 		if (!isRegenning) {
 			StartCoroutine(RegenFood());
 		}
@@ -105,14 +129,16 @@ public class FungusInteract : Dialog {
 	public override void OnInteract(PlayerInteract player) {
 		switch (PlayerInteract.Instance.PickupType) {
 			case PickupType.Food:
-				ReadOut("I can only eat leaves!", "whatever");
+				ReadOut("You give me leaves, I'll grow you some fruit.", "Now everybody has something to eat!");
 				break;
 			case PickupType.Larva:
-				ReadOut("Bro, this is your offspring, give me leaves!", "whatever");
+				ReadOut("Oh my dear! Bring her to the Nursery! She needs warmth and food!");
 				break;
 			case PickupType.Leaf:
-				ReadOut("yummi!");
-				TakeLeaf();
+				if (IsHungry) {
+					TakeLeaf();
+					ReadOut("MOMPF!");
+				}
 				break;
 			case PickupType.None:
 				break;

@@ -1,7 +1,5 @@
-using System;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class GameLogic : MonoBehaviour {
 	public int numAntsWin = 10;
@@ -14,23 +12,24 @@ public class GameLogic : MonoBehaviour {
 	private int antCounter;
 	private float startTime;
 
-
-	public bool showTutorial = true; // Default to true
-
+	public bool showTutorial = true;
+	
+	public bool TimerPaused { get; set; }
+	
 	void Awake() {
 		if (Instance == null) {
 			Instance = this;
-			DontDestroyOnLoad(gameObject); // Keep this object between scene loads
+			DontDestroyOnLoad(gameObject);
 		}
 		else {
-			Destroy(gameObject); // Ensure there's only one instance
+			Destroy(gameObject); 
 		}
 	}
 
 	private void Start() {
-		showTutorial = PlayerPrefs.GetInt("ShowTutorial", 1) == 1;  // Default to true on first load
+		showTutorial = PlayerPrefs.GetInt("ShowTutorial", 1) == 1;  
 
-		if (showTutorial) {
+		if (showTutorial && false) {
 			ReadTutorial();
 		}
 		antCounter = 0;
@@ -47,11 +46,10 @@ public class GameLogic : MonoBehaviour {
 			"Give them to Mr. Fungus so that he can grow fruit for us.",
 			"Give the fruit to me, the Queen, so I'm able give birth to new larvae.",
 			"The larvae will then have to go to the Nursery, they will also need food.",
-			string.Format("Can you manage to raise {0} new larvae? You have {1} minutes.", numAntsWin, timeLimit),
+			string.Format("Can you manage to raise {0} larvae? You have {1} minutes.", numAntsWin, timeLimit),
 			"Hurry up, hun, time starts now!"
 		};
-		DialogBox.Instance.ReadOut(tut, PlayerInteract.Instance.OnFinishTalk);
-		Debug.Log("target player " + PlayerMovement.Instance.gameObject);
+		DialogBox.Instance.ReadOut(tut, null, PlayerInteract.Instance.OnFinishTalk);
 	}
 
 	public void RestartScene() {
@@ -60,8 +58,11 @@ public class GameLogic : MonoBehaviour {
 	}
 
 	private void Update() {
+		if (TimerPaused) {
+			startTime += Time.deltaTime;
+			return;
+		}
 		float timeLeft = timeLimit * 60 - (Time.time - startTime);
-
 		if (timeLeft < 0) {
 			HandleLose();
 		}
@@ -71,6 +72,10 @@ public class GameLogic : MonoBehaviour {
 		countdownLabel.text = string.Format("{0:00}:{1:00}", minutes, seconds);
 	}
 
+	public void GameOver(string message) {
+		Debug.Log("help, game over" + message);	
+	}
+	
 	private void HandleLose() { }
 
 	public void NotifyAntSpawn() {

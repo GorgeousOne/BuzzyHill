@@ -193,6 +193,7 @@ MonoBehaviour:
   maxFuel: 6
   fuel: 0
   regenTime: 1
+  starveTime: 10
 --- !u!1001 &44679022
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -955,7 +956,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 187549411}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 33, y: -15, z: -10}
+  m_LocalPosition: {x: 40.5, y: -44.5, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1735,7 +1736,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 33, y: -15, z: -10}
+  m_LocalPosition: {x: 40.5, y: -44.5, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2512,7 +2513,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 640703838}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 46.5, y: -47, z: 0}
+  m_LocalPosition: {x: 45.5, y: -44, z: 0}
   m_LocalScale: {x: 3, y: 3, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -2535,11 +2536,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   highlightColor: {r: 1, g: 1, b: 1, a: 1}
   defaultColor: {r: 0.12, g: 0.06, b: 0, a: 1}
-  ghostPrefab: {fileID: 0}
+  ghostPrefab: {fileID: 1658547369639496406, guid: fabf255694e89f442a761756d1778256, type: 3}
   larvaPrefab: {fileID: 6506834306961818950, guid: 914ace2aee0782a4e81c08bd724ff313, type: 3}
   maxFuel: 6
   fuel: 0
   regenTime: 2
+  starveTime: 6
 --- !u!1 &660862412
 GameObject:
   m_ObjectHideFlags: 0
@@ -2829,7 +2831,7 @@ GameObject:
   m_Component:
   - component: {fileID: 735189239}
   m_Layer: 0
-  m_Name: Leaf
+  m_Name: Entrance
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4908,8 +4910,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   numAntsWin: 20
   timeLimit: 5
-  antsLabel: {fileID: 0}
-  countdownLabel: {fileID: 0}
+  antsLabel: {fileID: 300066340}
+  countdownLabel: {fileID: 1320685555}
   showTutorial: 1
 --- !u!1 &1311849399
 GameObject:
@@ -5592,7 +5594,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1429284893}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 33, y: -15, z: 0}
+  m_LocalPosition: {x: 40.5, y: -44.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

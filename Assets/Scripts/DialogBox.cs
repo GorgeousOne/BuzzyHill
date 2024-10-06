@@ -36,11 +36,9 @@ public class DialogBox : MonoBehaviour {
 		controls.Disable();
 	}
 
-	void Start() {
-	}
-
 	void StartDialog() {
 		index = 0;
+		GameLogic.Instance.TimerPaused = true;
 		StartCoroutine(TypeLine());
 	}
 
@@ -51,10 +49,13 @@ public class DialogBox : MonoBehaviour {
 		}
 	}
 
-	public void ReadOut(string[] text, Action afterText) {
+	public void ReadOut(string[] text, GameObject focus, Action afterText) {
 		index = 0;
 		lines = text;
 		afterTextCall = afterText;
+		if (focus) {
+			SetCinemachineTarget(focus);
+		}
 		StartDialog();
 	}
 	
@@ -83,11 +84,16 @@ public class DialogBox : MonoBehaviour {
 			StartCoroutine(TypeLine());
 		}
 		else {
-			textComp.text = string.Empty;
-			gameObject.SetActive(false);
-			SetCinemachineTarget(PlayerMovement.Instance.gameObject);
-			afterTextCall?.Invoke();
+			FinishDialog();
 		}
+	}
+
+	void FinishDialog() {
+		textComp.text = string.Empty;
+		gameObject.SetActive(false);
+		SetCinemachineTarget(PlayerMovement.Instance.gameObject);
+		afterTextCall?.Invoke();
+		GameLogic.Instance.TimerPaused = false;
 	}
 
 	List<string> focusableNames = new() { "Fungus", "Entrance", "Queen", "Nursery" };
@@ -108,4 +114,12 @@ public class DialogBox : MonoBehaviour {
 		virtualCamera.Follow = targetObject.transform;
 		virtualCamera.LookAt = targetObject.transform;
 	}
+
+	//fix never
+	// private void TogglePanning(bool state) {
+	// 	CinemachineVirtualCamera virtualCamera = FindObjectOfType<CinemachineVirtualCamera>();
+	// 	var composer = virtualCamera.GetCinemachineComponent<CinemachineComposer>();
+	// 	composer.m_SoftZoneHeight = state ? 100f : 0.8f;
+	// 	composer.m_SoftZoneWidth = state ? 100f : 0.8f;
+	// }
 }

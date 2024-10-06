@@ -19,7 +19,7 @@ public class LarvaInteract : Pickup {
 		if (IsStored && !IsHungry) {
 			breedTime -= Time.deltaTime;
 		}
-		if (IsHungry) {
+		if (IsHungry && !GameLogic.Instance.TimerPaused) {
 			starveTimer += Time.deltaTime;
 			if (starveTimer > starveTime) {
 				Die();				
