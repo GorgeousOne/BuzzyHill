@@ -47,7 +47,6 @@ public class FungusInteract : Dialog {
 		if (freeStems.Count > 0) {
 			StartCoroutine(RegenFood());
 		} else {
-			Destroy(eatenLeaf.gameObject);
 			eatenLeaf = null;
 			isRegenning = false;
 		}
