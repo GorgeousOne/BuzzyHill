@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -31,7 +30,7 @@ public class PlayerInteract : MonoBehaviour {
 	}
 
 	private void Start() {
-		gameObject.GetComponent<PlayerMovement>().controls.Player.Interact.performed += PlayerInteract.Instance.OnInteract;
+		gameObject.GetComponent<PlayerMovement>().controls.Player.Interact.performed += Instance.OnInteract;
 	}
 
 	public void FocusInteractable(Interactable thing) {

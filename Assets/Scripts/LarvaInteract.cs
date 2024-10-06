@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class LarvaInteract : Pickup {
 
@@ -29,6 +28,7 @@ public class LarvaInteract : Pickup {
 		if (breedTime < 0) {
 			//signal disappearing to breeder
 			EjectSelf();
+			GameLogic.Instance.NotifyAntSpawn();
 			Instantiate(npcPrefab, transform.position, Quaternion.identity);
 			Destroy(gameObject);
 		}

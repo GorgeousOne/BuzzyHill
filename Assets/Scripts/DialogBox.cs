@@ -1,5 +1,8 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
+using Cinemachine;
 using UnityEngine;
 using TMPro;
 
@@ -14,10 +17,18 @@ public class DialogBox : MonoBehaviour {
 	private int index;
 	private DialogControls controls;
 	private Action afterTextCall;
-	
-	private void OnEnable() {
+
+	private void Awake() {
+		Instance = this;
 		controls = new DialogControls();
 		controls.Dialog.Skip.performed += _ => SkipLine();
+		textComp.text = string.Empty;
+		gameObject.SetActive(false);
+	}
+
+	private void OnEnable() {
+		// controls = new DialogControls();
+		// controls.Dialog.Skip.performed += _ => SkipLine();
 		controls.Enable();
 	}
 
@@ -25,11 +36,7 @@ public class DialogBox : MonoBehaviour {
 		controls.Disable();
 	}
 
-	// Start is called before the first frame update
 	void Start() {
-		Instance = this;
-		textComp.text = string.Empty;
-		gameObject.SetActive(false);
 	}
 
 	void StartDialog() {
@@ -63,15 +70,42 @@ public class DialogBox : MonoBehaviour {
 	}
 	
 	void NextLine() {
-		if (lines == null || index < lines.Length-1) {
+		if (lines == null || index < lines.Length - 1) {
 			index++;
 			textComp.text = string.Empty;
+
+			// Check if the line contains a scene object name from the predefined list
+			string currentLine = lines[index];
+			GameObject targetObject = CheckForSceneObjectInLine(currentLine);
+			if (targetObject != null) {
+				SetCinemachineTarget(targetObject);
+			}
 			StartCoroutine(TypeLine());
 		}
 		else {
 			textComp.text = string.Empty;
 			gameObject.SetActive(false);
+			SetCinemachineTarget(PlayerMovement.Instance.gameObject);
 			afterTextCall?.Invoke();
 		}
+	}
+
+	List<string> focusableNames = new() { "Fungus", "Entrance", "Queen", "Nursery" };
+
+	GameObject CheckForSceneObjectInLine(string line) {
+		string[] words = Regex.Replace(line, @"[^\w\s]", "").Split(' ');
+		
+		foreach (string word in words) {
+			if (focusableNames.Contains(word)) {
+				return GameObject.Find(word);
+			}
+		}
+		return null;
+	}
+
+	private void SetCinemachineTarget(GameObject targetObject) {
+		CinemachineVirtualCamera virtualCamera = FindObjectOfType<CinemachineVirtualCamera>();
+		virtualCamera.Follow = targetObject.transform;
+		virtualCamera.LookAt = targetObject.transform;
 	}
 }
