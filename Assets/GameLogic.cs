@@ -30,7 +30,7 @@ public class GameLogic : MonoBehaviour {
 		
 		showTutorial = PlayerPrefs.GetInt("ShowTutorial", 1) == 1;
 		
-		if (showTutorial) {
+		if (showTutorial && false) {
 			ReadTutorial();
 		}
 	}
@@ -46,7 +46,6 @@ public class GameLogic : MonoBehaviour {
 			string.Format("Can you manage to raise {0} larvae? You have {1} minutes.", numAntsWin, timeLimit),
 			"Hurry up, hun, time starts now!"
 		};
-		DialogBox.Instance.ReadOut(tut, null, PlayerInteract.Instance.OnFinishTalk);
 		DialogBox.Instance.ReadOut(tut, null, PlayerInteract.Instance.OnFinishTalk);
 	}
 
