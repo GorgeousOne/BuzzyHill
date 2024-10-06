@@ -16,6 +16,8 @@ public class FungusStem : MonoBehaviour {
 			return;
 		}
 		food = Instantiate(foodPrefab, transform).GetComponent<Pickup>();
+		food.transform.localPosition = Vector3.up * 0.5f;
+		food.Freeze(false);
 		food.OnPickupAction += OnFoodTake;
 
 	}

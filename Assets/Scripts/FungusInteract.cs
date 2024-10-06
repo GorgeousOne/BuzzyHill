@@ -53,6 +53,9 @@ public class FungusInteract : Interactable {
 	}
 
 	IEnumerator RegenFood() {
+		if (fuel < 1) {
+			yield break;
+		}
 		isRegenning = true;
 		yield return new WaitForSeconds(regenTime);
 		SpawnFood();
@@ -137,6 +140,7 @@ public class FungusInteract : Interactable {
 				}
 				break;
 			case PickupType.None:
+				ReadOut("Do you happen to have one of those tasty leaves for me?");
 				break;
 		}
 	}

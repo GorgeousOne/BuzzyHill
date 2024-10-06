@@ -41,9 +41,9 @@ public class GameLogic : MonoBehaviour {
 			"Our nest is in spring renovation and we urgently need reinforcements.", 
 			"You will find freshly cut leaves in the Entrance.",
 			"Give them to Mr. Fungus so that he can grow fruit for us.",
-			"Give the fruit to me, the Queen, so I'm able give birth to new larvae.",
-			"The larvae will then have to go to the Nursery, they will also need food.",
-			string.Format("Can you manage to raise {0} larvae? You have {1} minutes.", numAntsWin, timeLimit),
+			"Give the fruit to me, the Queen, so I'm able give birth to new larva.",
+			"The larva will then have to go to the Nursery, they will also need food.",
+			string.Format("Can you manage to raise {0} larva? You have {1} minutes.", numAntsWin, timeLimit),
 			"Hurry up, hun, time starts now!"
 		};
 		DialogBox.Instance.ReadOut(tut, null, PlayerInteract.Instance.OnFinishTalk);

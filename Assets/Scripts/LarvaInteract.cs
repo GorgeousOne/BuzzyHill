@@ -38,13 +38,11 @@ public class LarvaInteract : Pickup {
 			
 			if (starveTimer > starveTime / 2 && !hasWarnedStarve) {
 				hasWarnedStarve = true;
-				ReadOut("Waaah! I'm sp hugry!");
+				ReadOut("Waaah! I'm so hugry!");
 			}
 			
 			if (starveTimer > starveTime) {
-				if (isStored) {
-					ReadOut("OMG! You can't just let them starve! Bring them food!");
-				}
+				ReadOut("OMG! She starved! You need to nurse and feed them!");
 				Die();
 			}
 		}
