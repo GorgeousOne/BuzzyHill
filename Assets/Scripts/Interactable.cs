@@ -40,8 +40,6 @@ public class Interactable : MonoBehaviour {
 	}
 	
 	public void ReadOut(params string[] text) {
-		DialogBox.Instance.gameObject.SetActive(true);
-		PlayerInteract.Instance.OnStartTalk();
 		DialogBox.Instance.ReadOut(text, gameObject, PlayerInteract.Instance.OnFinishTalk);
 	}
 }

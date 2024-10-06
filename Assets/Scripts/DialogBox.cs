@@ -7,9 +7,8 @@ using UnityEngine;
 using TMPro;
 
 public class DialogBox : MonoBehaviour {
-
 	public static DialogBox Instance;
-	
+
 	public TextMeshProUGUI textComp;
 	public string[] lines;
 	public float textSpeed;
@@ -17,6 +16,20 @@ public class DialogBox : MonoBehaviour {
 	private int index;
 	private DialogControls controls;
 	private Action afterTextCall;
+	private Queue<DialogItem> dialogQueue = new ();
+
+	private struct DialogItem {
+		public string[] Lines;
+		public GameObject Focus;
+		public Action AfterTextAction;
+
+		public DialogItem(string[] lines, GameObject focus, Action afterTextAction) {
+			Lines = lines;
+			Focus = focus;
+			AfterTextAction = afterTextAction;
+		}
+	}
+
 
 	private void Awake() {
 		Instance = this;
@@ -27,8 +40,6 @@ public class DialogBox : MonoBehaviour {
 	}
 
 	private void OnEnable() {
-		// controls = new DialogControls();
-		// controls.Dialog.Skip.performed += _ => SkipLine();
 		controls.Enable();
 	}
 
@@ -36,7 +47,19 @@ public class DialogBox : MonoBehaviour {
 		controls.Disable();
 	}
 
-	void StartDialog() {
+	private void StartDialog() {
+		if (dialogQueue.Count < 1) {
+			return;
+		}
+		gameObject.SetActive(true);
+		PlayerInteract.Instance.OnStartTalk();
+		
+		DialogItem currentItem = dialogQueue.Peek();
+		if (currentItem.Focus) {
+			SetCinemachineTarget(currentItem.Focus);
+		}
+		lines = currentItem.Lines;
+		afterTextCall = currentItem.AfterTextAction;
 		index = 0;
 		GameLogic.Instance.TimerPaused = true;
 		StartCoroutine(TypeLine());
@@ -50,15 +73,13 @@ public class DialogBox : MonoBehaviour {
 	}
 
 	public void ReadOut(string[] text, GameObject focus, Action afterText) {
-		index = 0;
-		lines = text;
-		afterTextCall = afterText;
-		if (focus) {
-			SetCinemachineTarget(focus);
+		dialogQueue.Enqueue(new DialogItem(text, focus, afterText));
+		if (dialogQueue.Count == 1)
+		{
+			StartDialog();
 		}
-		StartDialog();
 	}
-	
+
 	void SkipLine() {
 		if (textComp.text == lines[index]) {
 			NextLine();
@@ -67,9 +88,8 @@ public class DialogBox : MonoBehaviour {
 			StopAllCoroutines();
 			textComp.text = lines[index];
 		}
-		
 	}
-	
+
 	void NextLine() {
 		if (lines == null || index < lines.Length - 1) {
 			index++;
@@ -81,6 +101,7 @@ public class DialogBox : MonoBehaviour {
 			if (targetObject != null) {
 				SetCinemachineTarget(targetObject);
 			}
+
 			StartCoroutine(TypeLine());
 		}
 		else {
@@ -94,18 +115,22 @@ public class DialogBox : MonoBehaviour {
 		SetCinemachineTarget(PlayerMovement.Instance.gameObject);
 		afterTextCall?.Invoke();
 		GameLogic.Instance.TimerPaused = false;
+		//next or quit
+		dialogQueue.Dequeue();
+		StartDialog();
 	}
 
-	List<string> focusableNames = new() { "Fungus", "Entrance", "Queen", "Nursery" };
+	List<string> focusableNames = new() {"Fungus", "Entrance", "Queen", "Nursery"};
 
 	GameObject CheckForSceneObjectInLine(string line) {
 		string[] words = Regex.Replace(line, @"[^\w\s]", "").Split(' ');
-		
+
 		foreach (string word in words) {
 			if (focusableNames.Contains(word)) {
 				return GameObject.Find(word);
 			}
 		}
+
 		return null;
 	}
 
@@ -114,12 +139,4 @@ public class DialogBox : MonoBehaviour {
 		virtualCamera.Follow = targetObject.transform;
 		virtualCamera.LookAt = targetObject.transform;
 	}
-
-	//fix never
-	// private void TogglePanning(bool state) {
-	// 	CinemachineVirtualCamera virtualCamera = FindObjectOfType<CinemachineVirtualCamera>();
-	// 	var composer = virtualCamera.GetCinemachineComponent<CinemachineComposer>();
-	// 	composer.m_SoftZoneHeight = state ? 100f : 0.8f;
-	// 	composer.m_SoftZoneWidth = state ? 100f : 0.8f;
-	// }
 }

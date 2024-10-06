@@ -36,8 +36,6 @@ public class GameLogic : MonoBehaviour {
 	}
 
 	private void ReadTutorial() {
-		DialogBox.Instance.gameObject.SetActive(true);
-		PlayerInteract.Instance.OnStartTalk();
 		string[] tut = {
 			"Welcome, new soldier, we are proud to have you in our ranks!",
 			"Our nest is in spring renovation and we urgently need reinforcements.", 
@@ -48,6 +46,7 @@ public class GameLogic : MonoBehaviour {
 			string.Format("Can you manage to raise {0} larvae? You have {1} minutes.", numAntsWin, timeLimit),
 			"Hurry up, hun, time starts now!"
 		};
+		DialogBox.Instance.ReadOut(tut, null, PlayerInteract.Instance.OnFinishTalk);
 		DialogBox.Instance.ReadOut(tut, null, PlayerInteract.Instance.OnFinishTalk);
 	}
 
