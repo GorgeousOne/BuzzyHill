@@ -276,9 +276,9 @@ MonoBehaviour:
   defaultColor: {r: 0.12, g: 0.06, b: 0, a: 1}
   ghostPrefab: {fileID: 1658547369639496406, guid: fabf255694e89f442a761756d1778256, type: 3}
   growth: {fileID: 1787175823}
-  maxFuel: 6
-  regenTime: 8
-  starveTime: 60
+  maxFuel: 4
+  regenTime: 15
+  starveTime: 80
 --- !u!1001 &44679022
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -826,7 +826,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 187549411}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 41.56, y: -45.846, z: -10}
+  m_LocalPosition: {x: 41.56, y: -45.844, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1579,7 +1579,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 41.56, y: -45.846, z: -10}
+  m_LocalPosition: {x: 41.56, y: -45.844, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2327,8 +2327,8 @@ MonoBehaviour:
   ghostPrefab: {fileID: 1658547369639496406, guid: fabf255694e89f442a761756d1778256, type: 3}
   larvaPrefab: {fileID: 6506834306961818950, guid: 914ace2aee0782a4e81c08bd724ff313, type: 3}
   maxFuel: 3
-  regenTime: 20
-  starveTime: 60
+  regenTime: 30
+  starveTime: 80
 --- !u!1 &645521801
 GameObject:
   m_ObjectHideFlags: 0
@@ -4597,7 +4597,7 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_Size: {x: 1.8, y: 0.8}
+  m_Size: {x: 2.2, y: 0.8}
   m_Direction: 1
 --- !u!4 &1429284896
 Transform:
@@ -4607,7 +4607,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1429284893}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 41.56, y: -45.846, z: 0}
+  m_LocalPosition: {x: 41.56, y: -45.844, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

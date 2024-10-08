@@ -23,7 +23,7 @@ public class QueenInteract : Interactable {
 	private void Awake() {
 		fuel = 0;
 		//give the people time
-		starveTimer = -starveTime / 2;
+		starveTimer = -starveTime;
 	}
 
 	private void Update() {
@@ -110,11 +110,11 @@ public class QueenInteract : Interactable {
 				ReadOut("Quick! Bring her to the nursery!");
 				break;
 			case PickupType.Leaf:
-				ReadOut("I can't eat that dum dum!", "But ol' Mr. Mushroom sure will be happy about that leaf.");
+				ReadOut("I can't eat that dum dum!", "But ol' Mr. Fungus sure will be happy about that leaf.");
 				break;
 			case PickupType.None:
 				if (IsHungry) {
-					ReadOut("Come get me a fruit from Mr. fungus!");
+					ReadOut("Come get me a fruit from Mr. Fungus!");
 				}
 				else {
 					ReadOut("Cut me some slack! You can't rush perfect larvae.");

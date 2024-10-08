@@ -57,9 +57,9 @@ public class DialogBox : MonoBehaviour {
 			SetCinemachineTarget(currentItem.Focus);
 		}
 		lines = currentItem.Lines;
-		index = 0;
+		index = -1;
 		GameLogic.Instance.TimerPaused = true;
-		StartCoroutine(TypeLine());
+		NextLine();
 	}
 
 	IEnumerator TypeLine() {
@@ -88,7 +88,7 @@ public class DialogBox : MonoBehaviour {
 	}
 
 	void NextLine() {
-		if (lines == null || index < lines.Length - 1) {
+		if (index < lines.Length - 1) {
 			index++;
 			textComp.text = string.Empty;
 

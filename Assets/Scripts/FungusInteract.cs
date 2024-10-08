@@ -33,6 +33,7 @@ public class FungusInteract : Interactable {
 			freeStems.Add(stem);
 			stem.OnFoodPickup += OnStemFreed;
 		}
+		starveTimer = -0.5f * starveTime;
 	}
 
 	private void Update() {
@@ -150,11 +151,12 @@ public class FungusInteract : Interactable {
 				break;
 			case PickupType.None:
 				if (IsHungry) {
-					ReadOut("Do you happen to have one of those tasty leaves for me?");
+					ReadOut("Do you happen to have one of those fresh leaves from the Entrance for me?");
 				}
 				else {
 					ReadOut("*mompfing happily*");
 				}
+
 				break;
 		}
 	}
