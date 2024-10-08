@@ -5,28 +5,27 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 
 public class FungusInteract : Interactable {
-
 	public Transform growth;
 	private Pickup eatenLeaf;
 	private List<FungusStem> foodStems = new();
 	private List<FungusStem> freeStems = new();
-	
+
 	public int maxFuel = 6;
 	private int fuel;
 	public float regenTime = 10;
 	private float currentTime;
 	private bool isRegenning;
-	
+
 	public float starveTime = 40;
 	private float starveTimer;
 	private bool hasWarnedStarve = false;
 	private bool isDead = false;
-	
-	
+
+
 	public bool IsHungry {
 		get { return fuel < 1; }
 	}
-	
+
 	private void Start() {
 		for (int i = 0; i < growth.childCount; ++i) {
 			FungusStem stem = growth.GetChild(i).GetComponent<FungusStem>();
@@ -42,8 +41,10 @@ public class FungusInteract : Interactable {
 
 			if (starveTimer > starveTime / 2 && !hasWarnedStarve) {
 				hasWarnedStarve = true;
-				ReadOut(String.Format("Oh boy, I don't know if I can make it {0} seconds anymore.", starveTime - starveTimer));
+				ReadOut(String.Format("Oh boy, I don't know if I can make it {0} seconds anymore.",
+					starveTime - starveTimer));
 			}
+
 			if (starveTimer > starveTime && !isDead) {
 				isDead = true;
 				Die();
@@ -56,6 +57,7 @@ public class FungusInteract : Interactable {
 		if (fuel < 1) {
 			yield break;
 		}
+
 		isRegenning = true;
 		yield return new WaitForSeconds(regenTime);
 		SpawnFood();
@@ -65,13 +67,15 @@ public class FungusInteract : Interactable {
 				Destroy(eatenLeaf.gameObject);
 				eatenLeaf = null;
 			}
+
 			isRegenning = false;
 			ReadOut("That leaf was splendid! Do you happen to have more where that came from?");
 			yield break;
 		}
+
 		StartCoroutine(RegenFood());
 	}
-	
+
 	private void TakeLeaf() {
 		EatLeaf(PlayerInteract.Instance.Drop());
 	}
@@ -80,6 +84,7 @@ public class FungusInteract : Interactable {
 		if (freeStems.Count == 0 || fuel < 1) {
 			return;
 		}
+
 		fuel -= 1;
 		int rndIndex = Random.Range(0, freeStems.Count - 1);
 		FungusStem stem = freeStems[rndIndex];
@@ -93,23 +98,25 @@ public class FungusInteract : Interactable {
 			StartCoroutine(RegenFood());
 		}
 	}
-	
+
 	protected override void OnTriggerEnter2D(Collider2D other) {
 		base.OnTriggerEnter2D(other);
 		if (!IsHungry) {
 			return;
 		}
+
 		//pickup layer
 		if (other.gameObject.layer != 8) {
 			return;
 		}
+
 		Pickup pickup = other.transform.parent.GetComponent<Pickup>();
 
 		if (pickup.Type == PickupType.Leaf) {
 			EatLeaf(pickup);
 		}
 	}
-	
+
 	void EatLeaf(Pickup food) {
 		eatenLeaf = food;
 		eatenLeaf.Freeze();
@@ -123,6 +130,7 @@ public class FungusInteract : Interactable {
 		if (!isRegenning) {
 			StartCoroutine(RegenFood());
 		}
+
 		ReadOut("MOMPF!");
 	}
 
@@ -138,9 +146,15 @@ public class FungusInteract : Interactable {
 				if (IsHungry) {
 					TakeLeaf();
 				}
+
 				break;
 			case PickupType.None:
-				ReadOut("Do you happen to have one of those tasty leaves for me?");
+				if (IsHungry) {
+					ReadOut("Do you happen to have one of those tasty leaves for me?");
+				}
+				else {
+					ReadOut("*mompfing happily*");
+				}
 				break;
 		}
 	}

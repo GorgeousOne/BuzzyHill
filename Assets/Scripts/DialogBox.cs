@@ -21,12 +21,10 @@ public class DialogBox : MonoBehaviour {
 	private struct DialogItem {
 		public string[] Lines;
 		public GameObject Focus;
-		public Action AfterTextAction;
 
-		public DialogItem(string[] lines, GameObject focus, Action afterTextAction) {
+		public DialogItem(string[] lines, GameObject focus) {
 			Lines = lines;
 			Focus = focus;
-			AfterTextAction = afterTextAction;
 		}
 	}
 
@@ -59,7 +57,6 @@ public class DialogBox : MonoBehaviour {
 			SetCinemachineTarget(currentItem.Focus);
 		}
 		lines = currentItem.Lines;
-		afterTextCall = currentItem.AfterTextAction;
 		index = 0;
 		GameLogic.Instance.TimerPaused = true;
 		StartCoroutine(TypeLine());
@@ -72,8 +69,8 @@ public class DialogBox : MonoBehaviour {
 		}
 	}
 
-	public void ReadOut(string[] text, GameObject focus, Action afterText) {
-		dialogQueue.Enqueue(new DialogItem(text, focus, afterText));
+	public void ReadOut(string[] text, GameObject focus) {
+		dialogQueue.Enqueue(new DialogItem(text, focus));
 		if (dialogQueue.Count == 1)
 		{
 			StartDialog();
@@ -113,7 +110,7 @@ public class DialogBox : MonoBehaviour {
 		textComp.text = string.Empty;
 		gameObject.SetActive(false);
 		SetCinemachineTarget(PlayerMovement.Instance.gameObject);
-		afterTextCall?.Invoke();
+		PlayerInteract.Instance.OnFinishTalk();
 		GameLogic.Instance.TimerPaused = false;
 		//next or quit
 		dialogQueue.Dequeue();

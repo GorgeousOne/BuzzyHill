@@ -14,7 +14,7 @@ public class NpcWalk : MonoBehaviour {
 		_renderer = transform.GetChild(0).GetComponent<SpriteRenderer>();
 		
 		StartCoroutine(WalkRandomly());
-		DialogBox.Instance.ReadOut(new[] {"Another strong warrior in our rows!"}, gameObject, PlayerInteract.Instance.OnFinishTalk);
+		DialogBox.Instance.ReadOut(new[] {"Another strong warrior in our rows!"}, gameObject);
 	}
 
 	IEnumerator WalkRandomly() {

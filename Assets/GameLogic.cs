@@ -46,7 +46,7 @@ public class GameLogic : MonoBehaviour {
 			string.Format("Can you manage to raise {0} larva? You have {1} minutes.", numAntsWin, timeLimit),
 			"Hurry up, hun, time starts now!"
 		};
-		DialogBox.Instance.ReadOut(tut, null, PlayerInteract.Instance.OnFinishTalk);
+		DialogBox.Instance.ReadOut(tut, null);
 	}
 
 	public void RestartScene() {
@@ -72,6 +72,10 @@ public class GameLogic : MonoBehaviour {
 	public void GameOver(string message) {
 		Time.timeScale = 0;
 		TimerPaused = true;
+		
+		DialogBox.Instance.gameObject.SetActive(false);
+		Cursor.visible = true;
+		Cursor.lockState = CursorLockMode.None;
 		loseScreen.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = message;
 		loseScreen.SetActive(true);
 	}
@@ -84,6 +88,10 @@ public class GameLogic : MonoBehaviour {
 		if (antCounter >= numAntsWin) {
 			Time.timeScale = 0;
 			TimerPaused = true;
+			
+			DialogBox.Instance.gameObject.SetActive(false);
+			Cursor.visible = true;
+			Cursor.lockState = CursorLockMode.None;
 			winScreen.SetActive(true);
 		}
 	}

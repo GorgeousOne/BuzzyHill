@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class BreederInteract : Interactable {
@@ -51,6 +50,9 @@ public class BreederInteract : Interactable {
 	
 	public override void OnInteract(PlayerInteract player) {
 		if (PlayerInteract.Instance.PickupType != PickupType.Larva) {
+			if (PlayerInteract.Instance.PickupType == PickupType.None) {
+				DialogBox.Instance.ReadOut(new[]{"You can nurse larvae here..."}, gameObject);
+			}
 			return;
 		}
 		if (IsFree) {

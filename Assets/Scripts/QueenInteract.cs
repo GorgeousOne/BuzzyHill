@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class QueenInteract : Interactable {
 
@@ -21,6 +22,8 @@ public class QueenInteract : Interactable {
 	
 	private void Awake() {
 		fuel = 0;
+		//give the people time
+		starveTimer = -starveTime / 2;
 	}
 
 	private void Update() {
@@ -45,7 +48,7 @@ public class QueenInteract : Interactable {
 	
 	IEnumerator RegenLarva() {
 		yield return new WaitForSeconds(regenTime);
-		SpawnLarva(null);
+		SpawnLarva();
 		if (fuel < 1) {
 			ReadOut("Sweetie, mind bringing me some more of that delicious fruit?");
 			Destroy(eatenFood.gameObject);
@@ -55,8 +58,9 @@ public class QueenInteract : Interactable {
 		StartCoroutine(RegenLarva());
 	}
 
-	void SpawnLarva(Pickup lastLarva) {
+	void SpawnLarva() {
 		Pickup larva = Instantiate(larvaPrefab, transform.position+(Vector3.up*4), Quaternion.identity).GetComponent<Pickup>();
+		larva.gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.left * Random.Range(-0.1f, 0.1f);
 		// larva.OnLiftAction += SpawnLarva;
 		fuel -= 1;
 		ReadOut("Isn't she an angel! Can you take her upstairs?");
@@ -109,6 +113,12 @@ public class QueenInteract : Interactable {
 				ReadOut("I can't eat that dum dum!", "But ol' Mr. Mushroom sure will be happy about that leaf.");
 				break;
 			case PickupType.None:
+				if (IsHungry) {
+					ReadOut("Come get me a fruit from Mr. fungus!");
+				}
+				else {
+					ReadOut("Cut me some slack! You can't rush perfect larvae.");
+				}
 				break;
 		}
 	}

@@ -130,4 +130,4 @@ MonoBehaviour:
   npcPrefab: {fileID: 298947139983953359, guid: 397f30a0256d5fa458afc15a70cd1bc1, type: 3}
   eatTime: 20
   breedTime: 40
-  starveTime: 30
+  starveTime: 40

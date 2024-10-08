@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 
@@ -42,7 +41,6 @@ public class LarvaInteract : Pickup {
 			}
 			
 			if (starveTimer > starveTime) {
-				ReadOut("OMG! She starved! You need to nurse and feed them!");
 				Die();
 			}
 		}
@@ -104,6 +102,7 @@ public class LarvaInteract : Pickup {
 	protected override void Die() {
 		base.Die();
 		EjectSelf();
+		ReadOut("OMG! She starved! You need to nurse and feed them!");
 		Destroy(gameObject);
 	}
 }
